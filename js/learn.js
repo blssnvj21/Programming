@@ -1,0 +1,77 @@
+"use strict";
+const lessons=[
+["Meet the machine","6 min","Your first program",`<h1>01 · Meet the machine</h1><p>Programming means giving a computer precise instructions. Computers are fast, literal, and uninterested in what you meant.</p><div class="concept-callout"><strong>Core idea</strong><br>A program is a sequence of instructions. The computer follows the rules you wrote, not the rules you hoped you wrote.</div><h2>Your first instruction</h2><pre>print("Hello, world!");</pre><p><code>print()</code> displays a value. The text inside quotes is a string. Semicolons are optional in this teaching language.</p><h2>Predict the output</h2><pre>print("First");
+print("Second");</pre><p>Instructions run from top to bottom. Try changing the greeting in the Practice Lab.</p>`],
+["Values and types","8 min","Data",`<h1>02 · Values and types</h1><p>A value is data a program can use. Three basic types:</p><ul><li><code>"ripe"</code> — a string (text)</li><li><code>42</code> — a number</li><li><code>true</code> / <code>false</code> — booleans</li></ul><pre>print("Banana");
+print(42);
+print(true);</pre><div class="concept-callout"><strong>Remember</strong><br><code>"42"</code> is text; <code>42</code> is numeric. Quotes matter.</div><p>Adding numbers performs arithmetic. Adding a string to a value joins their text representations.</p><pre>print(2 + 3);
+print("Batch " + 3);</pre>`],
+["Variables","9 min","Naming data",`<h1>03 · Variables</h1><p>A variable is a named place to keep a value. Use names that explain what the value means.</p><pre>let fruit = "banana";
+let quantity = 7;
+print(fruit);
+print(quantity);</pre><p><code>let</code> declares a variable. Names are case-sensitive: <code>fruit</code> and <code>Fruit</code> differ.</p><h2>Updating a value</h2><pre>let count = 3;
+count = count - 1;
+print(count);</pre><p>Declare once, then assign a new value. Declaring the same name twice is an error.</p>`],
+["Operators and expressions","10 min","Arithmetic",`<h1>04 · Operators and expressions</h1><p>Operators perform operations; expressions produce values.</p><pre>print(8 + 2);
+print(8 - 2);
+print(8 * 2);
+print(8 / 2);</pre><p>Multiplication and division happen before addition and subtraction. Parentheses make order explicit.</p><pre>print((8 + 2) * 3);
+print(8 + 2 * 3);</pre><div class="concept-callout"><strong>Debugging habit</strong><br>If a result surprises you, add parentheses and test a smaller expression.</div>`],
+["Comparisons and booleans","8 min","True or false",`<h1>05 · Comparisons and booleans</h1><p>Comparisons ask a question and produce <code>true</code> or <code>false</code>.</p><pre>print(5 > 2);
+print(5 == 5);
+print(5 != 4);
+print(3 <= 1);</pre><ul><li><code>==</code> equal</li><li><code>!=</code> not equal</li><li><code>&gt;</code> greater; <code>&lt;</code> less</li><li><code>&gt;=</code> greater or equal; <code>&lt;=</code> less or equal</li></ul><p>One <code>=</code> assigns. Two <code>==</code> compare.</p>`],
+["Make decisions with if","10 min","Branching",`<h1>06 · Make decisions with if</h1><p>An <code>if</code> statement runs a block only when its condition is true.</p><pre>let ripe = true;
+if (ripe) {
+  print("Eat responsibly.");
+} else {
+  print("Wait patiently.");
+}</pre><p>The condition goes in parentheses; instructions go in braces. The optional <code>else</code> handles the other case.</p><div class="concept-callout"><strong>Common mistake</strong><br>Every opening brace <code>{</code> needs a closing brace <code>}</code>.</div>`],
+["Repeat without copy-paste","10 min","Loops",`<h1>07 · Repeat without copy-paste</h1><p>A loop repeats instructions. Use <code>repeat</code> when you know the number of repetitions.</p><pre>repeat 3 {
+  print("Again!");
+}</pre><p>Counts must be whole numbers from 0 to 1000. Loops save you from copying the same instruction many times.</p><h2>Why limits?</h2><p>Unbounded loops can keep a program busy forever. This beginner interpreter limits repetitions.</p>`],
+["Counters and changing state","12 min","Counters",`<h1>08 · Counters and state</h1><p>A counter is a variable that changes as a program runs.</p><pre>let count = 3;
+repeat 3 {
+  print(count);
+  count = count - 1;
+}</pre><p>The repeat count stays fixed at three, while <code>count</code> changes. Output: 3, then 2, then 1.</p><div class="concept-callout"><strong>Think</strong><br>Remove the assignment. The loop prints the same value each time.</div>`],
+["Combine control flow","12 min","Conditions + loops",`<h1>09 · Combine control flow</h1><p>Programs combine ideas. A decision inside a loop can behave differently each repetition.</p><pre>let number = 1;
+repeat 4 {
+  if (number > 2) {
+    print("Large");
+  } else {
+    print("Small");
+  }
+  number = number + 1;
+}</pre><p>Trace one iteration at a time: check the condition, choose a branch, update the variable.</p>`],
+["Errors are information","9 min","Debugging",`<h1>10 · Errors are information</h1><p>An error is feedback about a mismatch between code and language rules—not a verdict on your ability.</p><ol><li>Read the message.</li><li>Find the named variable or unexpected symbol.</li><li>Check quotes, parentheses, and braces.</li><li>Reduce the program to a small failing example.</li><li>Change one thing, then run again.</li></ol><pre>let fruit = "banana;
+print(fruit);</pre><p>This has an unterminated string. Close the quotation mark and retry.</p>`],
+["Mini project: Fruit inventory","15 min","Build something",`<h1>11 · Mini project: Fruit inventory</h1><p>Combine variables, arithmetic, and output.</p><pre>let boxes = 4;
+let bananasPerBox = 6;
+let total = boxes * bananasPerBox;
+print("Boxes: " + boxes);
+print("Total bananas: " + total);</pre><p>Extend it: add a sold variable, calculate what remains, and print a summary. Test at least two sets of values.</p><ul><li>Names explain their purpose.</li><li>Arithmetic is correct.</li><li>Output is understandable.</li><li>You tested different values.</li></ul>`],
+["Graduation and next steps","8 min","Keep learning",`<h1>12 · Graduation (pending fruit review)</h1><p>You have met the core building blocks: values, variables, expressions, decisions, loops, and debugging.</p><h2>Where next?</h2><ol><li>Practice small programs without copying.</li><li>Learn functions and how to break problems into pieces.</li><li>Study arrays and objects.</li><li>Choose JavaScript or Python and rebuild your mini project.</li><li>Learn testing and debugging systematically.</li></ol><div class="concept-callout"><strong>Final wisdom</strong><br>Learn by predicting, running code, noticing what happened, and improving your mental model.</div>`]
+];
+const challenges=[
+{title:"Challenge 01: Say hello",prompt:'Print the exact text Hello, world! (including punctuation).',code:'print("Hello, world!");',hint:'Use print("...") with the greeting inside quotes.',test:o=>o.trim()==="Hello, world!"},
+{title:"Challenge 02: Add numbers",prompt:"Display the result of 19 + 23.",code:"print(19 + 23);",hint:"Put the arithmetic expression inside print(...).",test:o=>o.trim()==="42"},
+{title:"Challenge 03: Make a variable",prompt:'Create snack containing "banana", then print it.',code:'let snack = "banana";\nprint(snack);',hint:"Declare with let, then print the variable name.",test:o=>o.trim()==="banana"},
+{title:"Challenge 04: A tiny decision",prompt:'Set score to 10. If it is greater than 5, print "Passed"; otherwise print "Try again".',code:'let score = 10;\nif (score > 5) {\n print("Passed");\n} else {\n print("Try again");\n}',hint:"Use if (score > 5) { ... } else { ... }.",test:o=>o.trim()==="Passed"},
+{title:"Challenge 05: Repeat",prompt:'Use repeat 3 to print "Banana!" three times.',code:'repeat 3 {\n print("Banana!");\n}',hint:"Put the count before a block in braces.",test:o=>o.trim().split("\n").join("|")==="Banana!|Banana!|Banana!"}
+], quizzes=[
+{q:"What does print() do?",a:["Displays a value","Creates a variable","Repeats code"],c:0,why:"print() evaluates and displays its value."},
+{q:'Which is a number?',a:['"42"',"42","Both"],c:1,why:'Quotes make "42" text.'},
+{q:"Which symbol compares equality?",a:["=","==","=>"],c:1,why:"A single = assigns; == compares."},
+{q:"What does if do?",a:["Runs every branch","Chooses based on a condition","Names a variable"],c:1,why:"The condition determines which branch runs."},
+{q:"What are loops for?",a:["Repeating instructions","Changing fonts","Renaming variables"],c:0,why:"Loops run a block repeatedly."}
+];
+let current=0,done=new Set(),ci=0,qi=0;const $=id=>document.getElementById(id);
+function renderList(){$("moduleList").innerHTML=lessons.map((l,i)=>'<button class="module-button '+(i===current?'active ':'')+(done.has(i)?'done':'')+'" data-i="'+i+'"><span class="module-number">'+(done.has(i)?'✓':String(i+1).padStart(2,'0'))+'</span><span><strong>'+l[0]+'</strong><small>'+l[1]+' · '+l[2]+'</small></span></button>').join("");document.querySelectorAll(".module-button").forEach(b=>b.onclick=()=>showLesson(+b.dataset.i));}
+function showLesson(i){current=Math.max(0,Math.min(lessons.length-1,i));const l=lessons[current];$("lessonModule").textContent="MODULE "+String(current+1).padStart(2,"0");$("lessonDuration").textContent=l[1];$("lessonContent").innerHTML=l[3];$("prevLesson").disabled=current===0;$("nextLesson").textContent=current===11?"Back to first ↺":"Next lesson →";$("completeLesson").textContent=done.has(current)?"Completed ✓":"Mark complete ✓";renderList();$("progressText").textContent=done.size+" of 12 lessons completed";$("progressBar").style.width=(done.size/12*100)+"%";}
+$("prevLesson").onclick=()=>showLesson(current-1);$("nextLesson").onclick=()=>showLesson(current===11?0:current+1);$("completeLesson").onclick=()=>{done.add(current);showLesson(current===11?current:current+1);};
+function renderChallenge(){let c=challenges[ci];$("challengeTitle").textContent=c.title;$("challengePrompt").textContent=c.prompt;$("challengeEditor").value=c.code;$("challengeFeedback").textContent="Try it, or ask for a hint.";$("challengeFeedback").className="feedback";$("practiceOutput").textContent="";}
+$("checkChallenge").onclick=()=>{try{const result=window.BananaCompiler($("challengeEditor").value),out=result.join("\n");$("practiceOutput").textContent=out;$("practiceState").textContent="RAN";const ok=challenges[ci].test(out);$("challengeFeedback").textContent=ok?"✓ Correct output! Explain each line to yourself.":"It ran, but the output does not match yet. Compare it with the prompt.";$("challengeFeedback").className="feedback "+(ok?"good":"bad");}catch(e){$("practiceOutput").textContent="COMPILER ERROR\n"+e.message;$("practiceState").textContent="ERROR";$("challengeFeedback").textContent="Read the error, fix one thing, and try again.";$("challengeFeedback").className="feedback bad";}};
+$("loadHint").onclick=()=>{$("challengeFeedback").textContent="Hint: "+challenges[ci].hint;};$("loadSolution").onclick=()=>{$("challengeEditor").value=challenges[ci].code;$("challengeFeedback").textContent="Solution loaded. Run it and explain each line."};$("nextChallenge").onclick=()=>{ci=(ci+1)%challenges.length;renderChallenge();};
+function renderQuiz(){const q=quizzes[qi];$("quizQuestion").textContent=q.q;$("quizFeedback").textContent="";$("quizOptions").innerHTML=q.a.map((a,i)=>'<button class="quiz-option" data-a="'+i+'">'+String.fromCharCode(65+i)+". "+a+"</button>").join("");document.querySelectorAll(".quiz-option").forEach(b=>b.onclick=()=>{document.querySelectorAll(".quiz-option").forEach(x=>x.disabled=true);const ok=+b.dataset.a===q.c;$("quizFeedback").textContent=(ok?"Correct. ":"Not quite. ")+q.why;$("quizFeedback").style.color=ok?"#8cf0be":"#ff9cad";});}
+$("nextQuiz").onclick=()=>{qi=(qi+1)%quizzes.length;renderQuiz();};renderList();showLesson(0);renderChallenge();renderQuiz();
