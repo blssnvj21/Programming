@@ -1,56 +1,56 @@
 "use strict";
 const lessons=[
-["Meet the machine","6 min","Your first program",`<h1>01 · Meet the machine</h1><p>Programming means giving a computer precise instructions. Computers are fast, literal, and uninterested in what you meant.</p><div class="concept-callout"><strong>Core idea</strong><br>A program is a sequence of instructions. The computer follows the rules you wrote, not the rules you hoped you wrote.</div><h2>Your first instruction</h2><pre>print("Hello, world!");</pre><p><code>print()</code> displays a value. The text inside quotes is a string. Semicolons are optional in this teaching language.</p><h2>Predict the output</h2><pre>print("First");
-print("Second");</pre><p>Instructions run from top to bottom. Try changing the greeting in the Practice Lab.</p>`],
-["Values and types","8 min","Data",`<h1>02 · Values and types</h1><p>A value is data a program can use. Three basic types:</p><ul><li><code>"ripe"</code> — a string (text)</li><li><code>42</code> — a number</li><li><code>true</code> / <code>false</code> — booleans</li></ul><pre>print("Banana");
-print(42);
-print(true);</pre><div class="concept-callout"><strong>Remember</strong><br><code>"42"</code> is text; <code>42</code> is numeric. Quotes matter.</div><p>Adding numbers performs arithmetic. Adding a string to a value joins their text representations.</p><pre>print(2 + 3);
-print("Batch " + 3);</pre>`],
-["Variables","9 min","Naming data",`<h1>03 · Variables</h1><p>A variable is a named place to keep a value. Use names that explain what the value means.</p><pre>let fruit = "banana";
-let quantity = 7;
-print(fruit);
-print(quantity);</pre><p><code>let</code> declares a variable. Names are case-sensitive: <code>fruit</code> and <code>Fruit</code> differ.</p><h2>Updating a value</h2><pre>let count = 3;
+["Meet the machine","6 min","Your first program",`<h1>01 · Meet the machine</h1><p>Programming means giving a computer precise instructions. Computers are fast, literal, and uninterested in what you meant.</p><div class="concept-callout"><strong>Core idea</strong><br>A program is a sequence of instructions. The computer follows the rules you wrote, not the rules you hoped you wrote.</div><h2>Your first instruction</h2><pre>yeet("Hello, world!");</pre><p><code>print()</code> displays a value. The text inside quotes is a string. Semicolons are optional in this teaching language.</p><h2>Predict the output</h2><pre>yeet("First");
+yeet("Second");</pre><p>Instructions run from top to bottom. Try changing the greeting in the Practice Lab.</p>`],
+["Values and types","8 min","Data",`<h1>02 · Values and types</h1><p>A value is data a program can use. Three basic types:</p><ul><li><code>"ripe"</code> — a string (text)</li><li><code>42</code> — a number</li><li><code>true</code> / <code>false</code> — booleans</li></ul><pre>yeet("Banana");
+yeet(42);
+yeet(true);</pre><div class="concept-callout"><strong>Remember</strong><br><code>"42"</code> is text; <code>42</code> is numeric. Quotes matter.</div><p>Adding numbers performs arithmetic. Adding a string to a value joins their text representations.</p><pre>yeet(2 + 3);
+yeet("Batch " + 3);</pre>`],
+["Variables","9 min","Naming data",`<h1>03 · Variables</h1><p>A variable is a named place to keep a value. Use names that explain what the value means.</p><pre>hoard fruit = "banana";
+hoard quantity = 7;
+yeet(fruit);
+yeet(quantity);</pre><p><code>let</code> declares a variable. Names are case-sensitive: <code>fruit</code> and <code>Fruit</code> differ.</p><h2>Updating a value</h2><pre>hoard count = 3;
 count = count - 1;
-print(count);</pre><p>Declare once, then assign a new value. Declaring the same name twice is an error.</p>`],
-["Operators and expressions","10 min","Arithmetic",`<h1>04 · Operators and expressions</h1><p>Operators perform operations; expressions produce values.</p><pre>print(8 + 2);
-print(8 - 2);
-print(8 * 2);
-print(8 / 2);</pre><p>Multiplication and division happen before addition and subtraction. Parentheses make order explicit.</p><pre>print((8 + 2) * 3);
-print(8 + 2 * 3);</pre><div class="concept-callout"><strong>Debugging habit</strong><br>If a result surprises you, add parentheses and test a smaller expression.</div>`],
-["Comparisons and booleans","8 min","True or false",`<h1>05 · Comparisons and booleans</h1><p>Comparisons ask a question and produce <code>true</code> or <code>false</code>.</p><pre>print(5 > 2);
-print(5 == 5);
-print(5 != 4);
-print(3 <= 1);</pre><ul><li><code>==</code> equal</li><li><code>!=</code> not equal</li><li><code>&gt;</code> greater; <code>&lt;</code> less</li><li><code>&gt;=</code> greater or equal; <code>&lt;=</code> less or equal</li></ul><p>One <code>=</code> assigns. Two <code>==</code> compare.</p>`],
-["Make decisions with if","10 min","Branching",`<h1>06 · Make decisions with if</h1><p>An <code>if</code> statement runs a block only when its condition is true.</p><pre>let ripe = true;
-if (ripe) {
-  print("Eat responsibly.");
-} else {
-  print("Wait patiently.");
+yeet(count);</pre><p>Declare once, then assign a new value. Declaring the same name twice is an error.</p>`],
+["Operators and expressions","10 min","Arithmetic",`<h1>04 · Operators and expressions</h1><p>Operators perform operations; expressions produce values.</p><pre>yeet(8 + 2);
+yeet(8 - 2);
+yeet(8 * 2);
+yeet(8 / 2);</pre><p>Multiplication and division happen before addition and subtraction. Parentheses make order explicit.</p><pre>yeet((8 + 2) * 3);
+yeet(8 + 2 * 3);</pre><div class="concept-callout"><strong>Debugging habit</strong><br>If a result surprises you, add parentheses and test a smaller expression.</div>`],
+["Comparisons and booleans","8 min","True or false",`<h1>05 · Comparisons and booleans</h1><p>Comparisons ask a question and produce <code>true</code> or <code>false</code>.</p><pre>yeet(5 > 2);
+yeet(5 == 5);
+yeet(5 != 4);
+yeet(3 <= 1);</pre><ul><li><code>==</code> equal</li><li><code>!=</code> not equal</li><li><code>&gt;</code> greater; <code>&lt;</code> less</li><li><code>&gt;=</code> greater or equal; <code>&lt;=</code> less or equal</li></ul><p>One <code>=</code> assigns. Two <code>==</code> compare.</p>`],
+["Make decisions with if","10 min","Branching",`<h1>06 · Make decisions with if</h1><p>An <code>if</code> statement runs a block only when its condition is true.</p><pre>hoard ripe = true;
+panic_if (ripe) {
+  yeet("Eat responsibly.");
+} cope_else {
+  yeet("Wait patiently.");
 }</pre><p>The condition goes in parentheses; instructions go in braces. The optional <code>else</code> handles the other case.</p><div class="concept-callout"><strong>Common mistake</strong><br>Every opening brace <code>{</code> needs a closing brace <code>}</code>.</div>`],
-["Repeat without copy-paste","10 min","Loops",`<h1>07 · Repeat without copy-paste</h1><p>A loop repeats instructions. Use <code>repeat</code> when you know the number of repetitions.</p><pre>repeat 3 {
-  print("Again!");
+["Repeat without copy-paste","10 min","Loops",`<h1>07 · Repeat without copy-paste</h1><p>A loop repeats instructions. Use <code>repeat</code> when you know the number of repetitions.</p><pre>loop_de_loop 3 {
+  yeet("Again!");
 }</pre><p>Counts must be whole numbers from 0 to 1000. Loops save you from copying the same instruction many times.</p><h2>Why limits?</h2><p>Unbounded loops can keep a program busy forever. This beginner interpreter limits repetitions.</p>`],
-["Counters and changing state","12 min","Counters",`<h1>08 · Counters and state</h1><p>A counter is a variable that changes as a program runs.</p><pre>let count = 3;
-repeat 3 {
-  print(count);
+["Counters and changing state","12 min","Counters",`<h1>08 · Counters and state</h1><p>A counter is a variable that changes as a program runs.</p><pre>hoard count = 3;
+loop_de_loop 3 {
+  yeet(count);
   count = count - 1;
 }</pre><p>The repeat count stays fixed at three, while <code>count</code> changes. Output: 3, then 2, then 1.</p><div class="concept-callout"><strong>Think</strong><br>Remove the assignment. The loop prints the same value each time.</div>`],
-["Combine control flow","12 min","Conditions + loops",`<h1>09 · Combine control flow</h1><p>Programs combine ideas. A decision inside a loop can behave differently each repetition.</p><pre>let number = 1;
-repeat 4 {
-  if (number > 2) {
-    print("Large");
-  } else {
-    print("Small");
+["Combine control flow","12 min","Conditions + loops",`<h1>09 · Combine control flow</h1><p>Programs combine ideas. A decision inside a loop can behave differently each repetition.</p><pre>hoard number = 1;
+loop_de_loop 4 {
+  panic_if (number > 2) {
+    yeet("Large");
+  } cope_else {
+    yeet("Small");
   }
   number = number + 1;
 }</pre><p>Trace one iteration at a time: check the condition, choose a branch, update the variable.</p>`],
-["Errors are information","9 min","Debugging",`<h1>10 · Errors are information</h1><p>An error is feedback about a mismatch between code and language rules—not a verdict on your ability.</p><ol><li>Read the message.</li><li>Find the named variable or unexpected symbol.</li><li>Check quotes, parentheses, and braces.</li><li>Reduce the program to a small failing example.</li><li>Change one thing, then run again.</li></ol><pre>let fruit = "banana;
-print(fruit);</pre><p>This has an unterminated string. Close the quotation mark and retry.</p>`],
-["Mini project: Fruit inventory","15 min","Build something",`<h1>11 · Mini project: Fruit inventory</h1><p>Combine variables, arithmetic, and output.</p><pre>let boxes = 4;
-let bananasPerBox = 6;
-let total = boxes * bananasPerBox;
-print("Boxes: " + boxes);
-print("Total bananas: " + total);</pre><p>Extend it: add a sold variable, calculate what remains, and print a summary. Test at least two sets of values.</p><ul><li>Names explain their purpose.</li><li>Arithmetic is correct.</li><li>Output is understandable.</li><li>You tested different values.</li></ul>`],
+["Errors are information","9 min","Debugging",`<h1>10 · Errors are information</h1><p>An error is feedback about a mismatch between code and language rules—not a verdict on your ability.</p><ol><li>Read the message.</li><li>Find the named variable or unexpected symbol.</li><li>Check quotes, parentheses, and braces.</li><li>Reduce the program to a small failing example.</li><li>Change one thing, then run again.</li></ol><pre>hoard fruit = "banana;
+yeet(fruit);</pre><p>This has an unterminated string. Close the quotation mark and retry.</p>`],
+["Mini project: Fruit inventory","15 min","Build something",`<h1>11 · Mini project: Fruit inventory</h1><p>Combine variables, arithmetic, and output.</p><pre>hoard boxes = 4;
+hoard bananasPerBox = 6;
+hoard total = boxes * bananasPerBox;
+yeet("Boxes: " + boxes);
+yeet("Total bananas: " + total);</pre><p>Extend it: add a sold variable, calculate what remains, and print a summary. Test at least two sets of values.</p><ul><li>Names explain their purpose.</li><li>Arithmetic is correct.</li><li>Output is understandable.</li><li>You tested different values.</li></ul>`],
 ["Graduation and next steps","8 min","Keep learning",`<h1>12 · Graduation (pending fruit review)</h1><p>You have met the core building blocks: values, variables, expressions, decisions, loops, and debugging.</p><h2>Where next?</h2><ol><li>Practice small programs without copying.</li><li>Learn functions and how to break problems into pieces.</li><li>Study arrays and objects.</li><li>Choose JavaScript or Python and rebuild your mini project.</li><li>Learn testing and debugging systematically.</li></ol><div class="concept-callout"><strong>Final wisdom</strong><br>Learn by predicting, running code, noticing what happened, and improving your mental model.</div>`]
 ];
 const challenges=[
@@ -68,7 +68,7 @@ const challenges=[
 ];
 let current=0,done=new Set(),ci=0,qi=0;const $=id=>document.getElementById(id);
 function renderList(){$("moduleList").innerHTML=lessons.map((l,i)=>'<button class="module-button '+(i===current?'active ':'')+(done.has(i)?'done':'')+'" data-i="'+i+'"><span class="module-number">'+(done.has(i)?'✓':String(i+1).padStart(2,'0'))+'</span><span><strong>'+l[0]+'</strong><small>'+l[1]+' · '+l[2]+'</small></span></button>').join("");document.querySelectorAll(".module-button").forEach(b=>b.onclick=()=>showLesson(+b.dataset.i));}
-function showLesson(i){current=Math.max(0,Math.min(lessons.length-1,i));const l=lessons[current];$("lessonModule").textContent="MODULE "+String(current+1).padStart(2,"0");$("lessonDuration").textContent=l[1];$("lessonContent").innerHTML=l[3];$("prevLesson").disabled=current===0;$("nextLesson").textContent=current===lessons.length-1?"Back to first ↺":"Next lesson →";$("completeLesson").textContent=done.has(current)?"Completed ✓":"Mark complete ✓";renderList();$("progressText").textContent=done.size+" of "+lessons.length+" lessons completed";$("progressBar").style.width=(done.size/lessons.length*100)+"%";}
+function showLesson(i){current=Math.max(0,Math.min(lessons.length-1,i));const l=lessons[current];$("lessonModule").textContent="MODULE "+String(current+1).padStart(2,"0");$("lessonDuration").textContent=l[1];$("lessonContent").innerHTML=l[3]+`<div class="concept-callout learning-loop"><strong>🍌 The Banana learning loop</strong><br><b>1. Predict:</b> Before running the example, write down what you think it prints.<br><b>2. Run:</b> Test it in the Playground or Practice Lab.<br><b>3. Explain:</b> Describe why each line produces that result.<br><b>4. Modify:</b> Change one value or instruction, predict again, then test.<br><small>Use BananaScript spellings: hoard (declare), yeet (print), loop_de_loop (repeat), panic_if (if), cope_else (else). These are real aliases in this interpreter.</small></div>`;$("prevLesson").disabled=current===0;$("nextLesson").textContent=current===lessons.length-1?"Back to first ↺":"Next lesson →";$("completeLesson").textContent=done.has(current)?"Completed ✓":"Mark complete ✓";renderList();$("progressText").textContent=done.size+" of "+lessons.length+" lessons completed";$("progressBar").style.width=(done.size/lessons.length*100)+"%";}
 $("prevLesson").onclick=()=>showLesson(current-1);$("nextLesson").onclick=()=>showLesson(current===lessons.length-1?0:current+1);$("completeLesson").onclick=()=>{done.add(current);showLesson(current===lessons.length-1?current:current+1);};
 function renderChallenge(){let c=challenges[ci];$("challengeTitle").textContent=c.title;$("challengePrompt").textContent=c.prompt;$("challengeEditor").value=c.code;$("challengeFeedback").textContent="Try it, or ask for a hint.";$("challengeFeedback").className="feedback";$("practiceOutput").textContent="";}
 $("checkChallenge").onclick=()=>{try{const result=window.BananaCompiler($("challengeEditor").value),out=result.join("\n");$("practiceOutput").textContent=out;$("practiceState").textContent="RAN";const ok=challenges[ci].test(out);$("challengeFeedback").textContent=ok?"✓ Correct output! Explain each line to yourself.":"It ran, but the output does not match yet. Compare it with the prompt.";$("challengeFeedback").className="feedback "+(ok?"good":"bad");}catch(e){$("practiceOutput").textContent="COMPILER ERROR\n"+e.message;$("practiceState").textContent="ERROR";$("challengeFeedback").textContent="Read the error, fix one thing, and try again.";$("challengeFeedback").className="feedback bad";}};
