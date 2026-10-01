@@ -82,3 +82,17 @@ let toastTimer;function toast(message){const el=$('toast');el.textContent=messag
 $('bananaButton').addEventListener('click',()=>toast('Download started: one (1) imaginary banana. Check your fruit folder.'));
 $('hallButton').addEventListener('click',()=>toast('Application received. Your banana ranking is pending peer review.'));
 $('projectsButton').addEventListener('click',()=>toast('Project archive opened. All projects are fictional and emotionally stable.'));
+
+// Small quality-of-life tools: code stays on the user's device unless they choose to save it.
+$('saveCodeButton').addEventListener('click',()=>{
+  const blob=new Blob([$('editor').value],{type:'text/plain;charset=utf-8'});
+  const url=URL.createObjectURL(blob),link=document.createElement('a');
+  link.href=url;link.download='my-banana-program.banana';document.body.appendChild(link);link.click();link.remove();URL.revokeObjectURL(url);
+  toast('Code saved as my-banana-program.banana 🍌');
+});
+$('copyOutputButton').addEventListener('click',async()=>{
+  const text=$('output').textContent;
+  if(!text){toast('Nothing to copy. The terminal is spiritually empty.');return;}
+  try{await navigator.clipboard.writeText(text);toast('Output copied. Go forth and paste responsibly.');}
+  catch{const range=document.createRange();range.selectNodeContents($('output'));const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);toast('Clipboard unavailable. Output selected—copy it manually.');}
+});
