@@ -66,6 +66,7 @@ function execute(ast) {
   }}
   run(ast);return output;
 }
+window.BananaCompiler = function(source){ return execute(parse(source)); };
 $('runButton').addEventListener('click',()=>{
   const out=$('output'),start=performance.now();out.classList.remove('error');$('compilerState').textContent='COMPILING…';$('status').textContent='Consulting the fruit council';
   try{const lines=execute(parse($('editor').value));out.textContent=lines.length?lines.join('\n'):'(Program completed without producing output. Suspiciously efficient.)';$('compilerState').textContent='COMPILED ✓';$('status').textContent='No bananas were harmed';}
