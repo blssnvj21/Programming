@@ -35,12 +35,14 @@ function parse(source) {
   function factor(){let n=unary();while(is('*')||is('/')||is('%')){const op=take().value;n={kind:'binary',op,left:n,right:unary()};}return n;}
   function term(){let n=factor();while(is('+')||is('-')){const op=take().value;n={kind:'binary',op,left:n,right:factor()};}return n;}
   function comparison(){let n=term();while(['==','!=','<','>','<=','>='].includes(peek().value)){const op=take().value;n={kind:'binary',op,left:n,right:term()};}return n;}
-  function logicalAnd(){let n=comparison();while(is('&&')){const op=take().value;n={kind:'binary',op,left:n,right:comparison()};}return n;}\n  function logicalOr(){let n=logicalAnd();while(is('||')){const op=take().value;n={kind:'binary',op,left:n,right:logicalAnd()};}return n;}\n  const expression=()=>logicalOr();
+  function logicalAnd(){let n=comparison();while(is('&&')){const op=take().value;n={kind:'binary',op,left:n,right:comparison()};}return n;}
+  function logicalOr(){let n=logicalAnd();while(is('||')){const op=take().value;n={kind:'binary',op,left:n,right:logicalAnd()};}return n;}\n  const expression=()=>logicalOr();
   function block(){expect('{');const body=[];while(!is('}')&&peek().type!=='eof')body.push(statement());expect('}');return body;}
   function statement(){
     if(is('let')){take();const name=identifier();expect('=');const value=expression();if(is(';'))take();return{kind:'let',name,value};}
     if(is('print')){take();expect('(');const value=expression();expect(')');if(is(';'))take();return{kind:'print',value};}
-    if(is('repeat')){take();const count=expression();return{kind:'repeat',count,body:block()};}\n    if(is('while')){take();expect('(');const test=expression();expect(')');return{kind:'while',test,body:block()};}
+    if(is('repeat')){take();const count=expression();return{kind:'repeat',count,body:block()};}
+    if(is('while')){take();expect('(');const test=expression();expect(')');return{kind:'while',test,body:block()};}
     if(is('if')){take();expect('(');const test=expression();expect(')');const yes=block();let no=[];if(is('else')){take();no=block();}return{kind:'if',test,yes,no};}
     if(peek().type==='id'){const name=take().value;expect('=');const value=expression();if(is(';'))take();return{kind:'assign',name,value};}
     throw new Error(`Unknown instruction "${peek().value||'end of file'}". Try let, print, repeat, or if.`);
@@ -65,7 +67,8 @@ function execute(ast) {
     else if(s.kind==='assign'){if(!Object.prototype.hasOwnProperty.call(env,s.name))throw new Error(`Cannot update "${s.name}" before registration.`);env[s.name]=evaluate(s.value);}
     else if(s.kind==='print'){if(output.length>=500)throw new Error("Output limit reached. The terminal needs a fruit break.");output.push(String(evaluate(s.value)));}
     else if(s.kind==='if')run(evaluate(s.test)?s.yes:s.no);
-    else if(s.kind==='repeat'){const count=evaluate(s.count);if(!Number.isInteger(count)||count<0||count>1000)throw new Error("repeat requires a whole number from 0 to 1000.");for(let i=0;i<count;i++)run(s.body);}\n    else if(s.kind==='while'){let turns=0;while(evaluate(s.test)){if(++turns>1000)throw new Error('while loop limit reached (1,000 iterations). Update the condition or the loop will apply for a desk job.');run(s.body);}}
+    else if(s.kind==='repeat'){const count=evaluate(s.count);if(!Number.isInteger(count)||count<0||count>1000)throw new Error("repeat requires a whole number from 0 to 1000.");for(let i=0;i<count;i++)run(s.body);}
+    else if(s.kind==='while'){let turns=0;while(evaluate(s.test)){if(++turns>1000)throw new Error('while loop limit reached (1,000 iterations). Update the condition or the loop will apply for a desk job.');run(s.body);}}
   }}
   run(ast);return output;
 }
