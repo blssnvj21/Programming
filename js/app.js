@@ -18,7 +18,7 @@ function tokenize(source) {
       i++; tokens.push({type:'string',value}); continue;
     }
     if (/[0-9]/.test(c)) { let raw=''; while(i<source.length && /[0-9.]/.test(source[i])) raw+=source[i++]; if(!/^\d+(\.\d+)?$/.test(raw)) throw new Error("Invalid number: "+raw); tokens.push({type:'number',value:Number(raw)}); continue; }
-    if (/[A-Za-z_]/.test(c)) { let word=''; while(i<source.length && /[A-Za-z0-9_]/.test(source[i])) word+=source[i++]; tokens.push({type:'id',value:word}); continue; }
+    if (/[A-Za-z_]/.test(c)) { let word=''; while(i<source.length && /[A-Za-z0-9_]/.test(source[i])) word+=source[i++]; const aliases={stash:'let',yell:'print',again:'repeat',when:'if',otherwise:'else'}; tokens.push({type:'id',value:aliases[word]||word}); continue; }
     const two=source.slice(i,i+2); if(['==','!=','<=','>='].includes(two)){tokens.push({type:'op',value:two});i+=2;continue;}
     if('+-*/(){}=<>;,' .includes(c)){tokens.push({type:'op',value:c});i++;continue;}
     throw new Error(`Unexpected character "${c}" at character ${i+1}. Please submit a fruit-based appeal.`);
