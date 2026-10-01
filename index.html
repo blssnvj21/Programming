@@ -72,10 +72,10 @@ if (banana == "yellow") {
 } else {
   print("Please contact Fruit Support.");
 }</textarea>
-          <div class="toolbar"><button class="btn primary" id="runButton">▶ Run code</button><button class="btn" id="exampleButton">↻ Load example</button><button class="btn" id="clearButton">⌫ Clear</button><span class="status" id="status">Awaiting fruit instructions</span></div>
+          <div class="toolbar"><button class="btn primary" id="runButton">▶ Run code</button><button class="btn" id="exampleButton">↻ Load example</button><button class="btn" id="clearButton">⌫ Clear</button><button class="btn" id="saveCodeButton">↓ Save .banana</button><span class="status" id="status">Awaiting fruit instructions</span></div>
         </div>
         <h3 class="subheading">Output terminal</h3>
-        <div class="codebox"><div class="editorbar"><span>stdout.log</span><span id="runtime">No execution yet</span></div><pre class="output" id="output" aria-live="polite"></pre></div>
+        <div class="codebox"><div class="editorbar"><span>stdout.log</span><span><span id="runtime">No execution yet</span> · <button class="text-button" id="copyOutputButton" type="button">Copy output</button></span></div><pre class="output" id="output" aria-live="polite"></pre></div>
         <p class="micro footnote">Supported: let, assignment, print(), repeat N { }, if / else, strings, numbers, + − * /, comparisons, and parentheses. Maximum 1,000 loop iterations. The compiler does not execute JavaScript.</p>
       </div>
     </section>
