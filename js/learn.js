@@ -9,7 +9,7 @@ yeet("Batch " + 3);</pre>`],
 ["Variables","9 min","Naming data",`<h1>03 · Variables</h1><p>A variable is a named place to keep a value. Use names that explain what the value means.</p><pre>hoard fruit = "banana";
 hoard quantity = 7;
 yeet(fruit);
-yeet(quantity);</pre><p><code>let</code> declares a variable. Names are case-sensitive: <code>fruit</code> and <code>Fruit</code> differ.</p><h2>Updating a value</h2><pre>hoard count = 3;
+yeet(quantity);</pre><p><code>hoard</code> declares a variable. Names are case-sensitive: <code>fruit</code> and <code>Fruit</code> differ.</p><h2>Updating a value</h2><pre>hoard count = 3;
 count = count - 1;
 yeet(count);</pre><p>Declare once, then assign a new value. Declaring the same name twice is an error.</p>`],
 ["Operators and expressions","10 min","Arithmetic",`<h1>04 · Operators and expressions</h1><p>Operators perform operations; expressions produce values.</p><pre>yeet(8 + 2);
@@ -21,13 +21,13 @@ yeet(8 + 2 * 3);</pre><div class="concept-callout"><strong>Debugging habit</stro
 yeet(5 == 5);
 yeet(5 != 4);
 yeet(3 <= 1);</pre><ul><li><code>==</code> equal</li><li><code>!=</code> not equal</li><li><code>&gt;</code> greater; <code>&lt;</code> less</li><li><code>&gt;=</code> greater or equal; <code>&lt;=</code> less or equal</li></ul><p>One <code>=</code> assigns. Two <code>==</code> compare.</p>`],
-["Make decisions with if","10 min","Branching",`<h1>06 · Make decisions with if</h1><p>An <code>if</code> statement runs a block only when its condition is true.</p><pre>hoard ripe = true;
+["Make decisions with if","10 min","Branching",`<h1>06 · Make decisions with if</h1><p>A <code>panic_if</code> statement runs a block only when its condition is true.</p><pre>hoard ripe = true;
 panic_if (ripe) {
   yeet("Eat responsibly.");
 } cope_else {
   yeet("Wait patiently.");
-}</pre><p>The condition goes in parentheses; instructions go in braces. The optional <code>else</code> handles the other case.</p><div class="concept-callout"><strong>Common mistake</strong><br>Every opening brace <code>{</code> needs a closing brace <code>}</code>.</div>`],
-["Repeat without copy-paste","10 min","Loops",`<h1>07 · Repeat without copy-paste</h1><p>A loop repeats instructions. Use <code>repeat</code> when you know the number of repetitions.</p><pre>loop_de_loop 3 {
+}</pre><p>The condition goes in parentheses; instructions go in braces. The optional <code>cope_else</code> handles the other case.</p><div class="concept-callout"><strong>Common mistake</strong><br>Every opening brace <code>{</code> needs a closing brace <code>}</code>.</div>`],
+["Repeat without copy-paste","10 min","Loops",`<h1>07 · Repeat without copy-paste</h1><p>A loop repeats instructions. Use <code>loop_de_loop</code> when you know the number of repetitions.</p><pre>loop_de_loop 3 {
   yeet("Again!");
 }</pre><p>Counts must be whole numbers from 0 to 1000. Loops save you from copying the same instruction many times.</p><h2>Why limits?</h2><p>Unbounded loops can keep a program busy forever. This beginner interpreter limits repetitions.</p>`],
 ["Counters and changing state","12 min","Counters",`<h1>08 · Counters and state</h1><p>A counter is a variable that changes as a program runs.</p><pre>hoard count = 3;
@@ -70,13 +70,13 @@ const lessonChecks=[
 const challenges=[
 {title:"Challenge 01: Say hello",prompt:'Print the exact text Hello, world! (including punctuation).',code:'yeet("Hello, world!");',hint:'Use yeet("...") with the greeting inside quotes.',test:o=>o.trim()==="Hello, world!"},
 {title:"Challenge 02: Add numbers",prompt:"Display the result of 19 + 23.",code:"yeet(19 + 23);",hint:"Put the arithmetic expression inside yeet(...).",test:o=>o.trim()==="42"},
-{title:"Challenge 03: Make a variable",prompt:'Create snack containing "banana", then print it.',code:'hoard snack = "banana";\nyeet(snack);',hint:"Declare with hoard, then yeet the variable name.",test:o=>o.trim()==="banana"},
+{title:"Challenge 03: Make a variable",prompt:'Create snack containing "banana", then yeet it.',code:'hoard snack = "banana";\nyeet(snack);',hint:"Declare with hoard, then yeet the variable name.",test:o=>o.trim()==="banana"},
 {title:"Challenge 04: A tiny decision",prompt:'Set score to 10. If it is greater than 5, print "Passed"; otherwise print "Try again".',code:'hoard score = 10;\npanic_if (score > 5) {\n yeet("Passed");\n} cope_else {\n yeet("Try again");\n}',hint:"Use panic_if (score > 5) { ... } cope_else { ... }.",test:o=>o.trim()==="Passed"},
 {title:"Challenge 05: Repeat",prompt:'Use loop_de_loop 3 to yeet "Banana!" three times.',code:'loop_de_loop 3 {\n yeet("Banana!");\n}',hint:"Use loop_de_loop followed by the count and a block in braces.",test:o=>o.trim().split("\n").join("|")==="Banana!|Banana!|Banana!"}
 ], quizzes=[
 {q:"What does yeet() do?",a:["Displays a value","Creates a variable","Repeats code"],c:0,why:"yeet() evaluates and displays its value."},
 {q:'Which is a number?',a:['"42"',"42","Both"],c:1,why:'Quotes make "42" text.'},
-{q:"Which symbol compares equality?",a:["=","==","=>"],c:1,why:"A single = assigns; == compares."},
+{q:"Which symbol checks equality?",a:["=","==","=>"],c:1,why:"A single = assigns; == compares."},
 {q:"What does if do?",a:["Runs every branch","Chooses based on a condition","Names a variable"],c:1,why:"The condition determines which branch runs."},
 {q:"What are loops for?",a:["Repeating instructions","Changing fonts","Renaming variables"],c:0,why:"Loops run a block repeatedly."}
 ];
