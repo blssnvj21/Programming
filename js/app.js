@@ -54,7 +54,10 @@ function execute(ast) {
     if(n.kind==='literal')return n.value;
     if(n.kind==='variable'){if(!Object.prototype.hasOwnProperty.call(env,n.name))throw new Error(`"${n.name}" has not been registered. Please contact Variable Records.`);return env[n.name];}
     if(n.kind==='unary'){const v=evaluate(n.right);if(n.op==='!')return !Boolean(v);if(typeof v!=='number')throw new Error("Unary minus requires a number. Fruit cannot be negatively ripe.");return -v;}
-    const a=evaluate(n.left),b=evaluate(n.right);
+    const a=evaluate(n.left);
+    if(n.op==='&&')return Boolean(a)&&Boolean(evaluate(n.right));
+    if(n.op==='||')return Boolean(a)||Boolean(evaluate(n.right));
+    const b=evaluate(n.right);
     switch(n.op){case '+':return typeof a==='string'||typeof b==='string'?String(a)+String(b):numeric(a,b,(x,y)=>x+y);case '-':return numeric(a,b,(x,y)=>x-y);case '*':return numeric(a,b,(x,y)=>x*y);case '%':if(b===0)throw new Error('Remainder by zero is undefined.');return numeric(a,b,(x,y)=>x%y);case '&&':return Boolean(a)&&Boolean(b);case '||':return Boolean(a)||Boolean(b);case '/':if(b===0)throw new Error("Division by zero. The Banana Council has suspended mathematics.");return numeric(a,b,(x,y)=>x/y);case '==':return a===b;case '!=':return a!==b;case '<':return a<b;case '>':return a>b;case '<=':return a<=b;case '>=':return a>=b;default:throw new Error("Unapproved operator: "+n.op);}
   }
   function run(list){for(const s of list){if(++steps>maxSteps)throw new Error("Execution limit reached (10,000 steps). The program has become a fruit-based bureaucracy.");
