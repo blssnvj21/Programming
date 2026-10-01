@@ -20,7 +20,7 @@ function tokenize(source) {
     if (/[0-9]/.test(c)) { let raw=''; while(i<source.length && /[0-9.]/.test(source[i])) raw+=source[i++]; if(!/^\d+(\.\d+)?$/.test(raw)) throw new Error("Invalid number: "+raw); tokens.push({type:'number',value:Number(raw)}); continue; }
     if (/[A-Za-z_]/.test(c)) { let word=''; while(i<source.length && /[A-Za-z0-9_]/.test(source[i])) word+=source[i++]; const aliases={stash:'let',hoard:'let',yell:'print',yeet:'print',again:'repeat',loop_de_loop:'repeat',when:'if',panic_if:'if',otherwise:'else',cope_else:'else'}; tokens.push({type:'id',value:aliases[word]||word}); continue; }
     const two=source.slice(i,i+2); if(['==','!=','<=','>=','&&','||'].includes(two)){tokens.push({type:'op',value:two});i+=2;continue;}
-    if('+-*/%(){}=<>;,!'.includes(c)){tokens.push({type:'op',value:c});i++;continue;}
+    if('+-*/%(){}[]=<>;,!'.includes(c)){tokens.push({type:'op',value:c});i++;continue;}
     throw new Error(`Unexpected character "${c}" at character ${i+1}. Please submit a fruit-based appeal.`);
   }
   tokens.push({type:'eof',value:''}); return tokens;
@@ -30,7 +30,19 @@ function parse(source) {
   const peek=()=>tokens[pos], take=()=>tokens[pos++], is=v=>peek().value===v;
   const expect=v=>{if(!is(v))throw new Error(`Expected "${v}", received "${peek().value||'end of file'}".`);return take();};
   const identifier=()=>{if(peek().type!=='id')throw new Error("Expected a variable name. The naming committee is concerned.");return take().value;};
-  function primary(){const t=take();if(t.type==='number'||t.type==='string')return{kind:'literal',value:t.value};if(t.type==='id'){if(t.value==='true')return{kind:'literal',value:true};if(t.value==='false')return{kind:'literal',value:false};return{kind:'variable',name:t.value};}if(t.value==='('){const e=expression();expect(')');return e;}throw new Error(`Expected a value, received "${t.value||'end of file'}".`);}
+  function primary(){
+    const t=take();
+    if(t.type==='number'||t.type==='string')return{kind:'literal',value:t.value};
+    if(t.type==='id'){
+      if(t.value==='true')return{kind:'literal',value:true};
+      if(t.value==='false')return{kind:'literal',value:false};
+      if(is('(')){take();const args=[];if(!is(')')){do{args.push(expression());if(!is(','))break;take();}while(true);}expect(')');return{kind:'call',name:t.value,args};}
+      return{kind:'variable',name:t.value};
+    }
+    if(t.value==='['){const items=[];if(!is(']')){do{items.push(expression());if(!is(','))break;take();}while(true);}expect(']');return{kind:'array',items};}
+    if(t.value==='('){const e=expression();expect(')');return e;}
+    throw new Error(`Expected a value, received "${t.value||'end of file'}".`);
+  }
   function unary(){if(is('-')||is('!')){const op=take().value;return{kind:'unary',op,right:unary()};}return primary();}
   function factor(){let n=unary();while(is('*')||is('/')||is('%')){const op=take().value;n={kind:'binary',op,left:n,right:unary()};}return n;}
   function term(){let n=factor();while(is('+')||is('-')){const op=take().value;n={kind:'binary',op,left:n,right:factor()};}return n;}
@@ -55,6 +67,8 @@ function execute(ast) {
   function numeric(a,b,fn){if(typeof a!=='number'||typeof b!=='number')throw new Error("This operation requires numbers. Please separate your fruit from your figures.");return fn(a,b);}
   function evaluate(n){
     if(n.kind==='literal')return n.value;
+    if(n.kind==='array')return n.items.map(evaluate);
+    if(n.kind==='call'){const args=n.args.map(evaluate);switch(n.name){case 'len':if(args.length!==1||!(typeof args[0]==='string'||Array.isArray(args[0])))throw new Error('len expects one string or array.');return args[0].length;case 'push':if(args.length!==2||!Array.isArray(args[0]))throw new Error('push expects an array and a value.');args[0].push(args[1]);return args[0].length;case 'pop':if(args.length!==1||!Array.isArray(args[0]))throw new Error('pop expects one array.');return args[0].pop();case 'str':if(args.length!==1)throw new Error('str expects one argument.');return String(args[0]);case 'num':if(args.length!==1||typeof args[0]==='boolean'||args[0]===''||!Number.isFinite(Number(args[0])))throw new Error('num expects a numeric value.');return Number(args[0]);default:throw new Error('Unknown built-in function: '+n.name+'.');}}
     if(n.kind==='variable'){if(!Object.prototype.hasOwnProperty.call(env,n.name))throw new Error(`"${n.name}" has not been registered. Please contact Variable Records.`);return env[n.name];}
     if(n.kind==='unary'){const v=evaluate(n.right);if(n.op==='!')return !Boolean(v);if(typeof v!=='number')throw new Error("Unary minus requires a number. Fruit cannot be negatively ripe.");return -v;}
     const a=evaluate(n.left);
