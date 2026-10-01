@@ -68,10 +68,10 @@ const lessonChecks=[
 {q:"Which learning cycle builds understanding?",a:["Copy and move on","Predict, run, explain, modify","Guess until lucky"],c:1,why:"Prediction and explanation help reveal your mental model."}
 ];
 const challenges=[
-{title:"Challenge 01: Say hello",prompt:'Print the exact text Hello, world! (including punctuation).',code:'print("Hello, world!");',hint:'Use yeet("...") with the greeting inside quotes.',test:o=>o.trim()==="Hello, world!"},
+{title:"Challenge 01: Say hello",prompt:'Print the exact text Hello, world! (including punctuation).',code:'yeet("Hello, world!");',hint:'Use yeet("...") with the greeting inside quotes.',test:o=>o.trim()==="Hello, world!"},
 {title:"Challenge 02: Add numbers",prompt:"Display the result of 19 + 23.",code:"yeet(19 + 23);",hint:"Put the arithmetic expression inside yeet(...).",test:o=>o.trim()==="42"},
-{title:"Challenge 03: Make a variable",prompt:'Create snack containing "banana", then print it.',code:'hoard snack = "banana";\nprint(snack);',hint:"Declare with hoard, then yeet the variable name.",test:o=>o.trim()==="banana"},
-{title:"Challenge 04: A tiny decision",prompt:'Set score to 10. If it is greater than 5, print "Passed"; otherwise print "Try again".',code:'hoard score = 10;\npanic_if (score > 5) {\n yeet("Passed");\n} cope_else {\n yeet("Try again");\n}',hint:"Use panic_if (score > 5) { ... } else { ... }.",test:o=>o.trim()==="Passed"},
+{title:"Challenge 03: Make a variable",prompt:'Create snack containing "banana", then print it.',code:'hoard snack = "banana";\nyeet(snack);',hint:"Declare with hoard, then yeet the variable name.",test:o=>o.trim()==="banana"},
+{title:"Challenge 04: A tiny decision",prompt:'Set score to 10. If it is greater than 5, print "Passed"; otherwise print "Try again".',code:'hoard score = 10;\npanic_if (score > 5) {\n yeet("Passed");\n} cope_else {\n yeet("Try again");\n}',hint:"Use panic_if (score > 5) { ... } cope_else { ... }.",test:o=>o.trim()==="Passed"},
 {title:"Challenge 05: Repeat",prompt:'Use loop_de_loop 3 to yeet "Banana!" three times.',code:'loop_de_loop 3 {\n yeet("Banana!");\n}',hint:"Use loop_de_loop followed by the count and a block in braces.",test:o=>o.trim().split("\n").join("|")==="Banana!|Banana!|Banana!"}
 ], quizzes=[
 {q:"What does yeet() do?",a:["Displays a value","Creates a variable","Repeats code"],c:0,why:"yeet() evaluates and displays its value."},
