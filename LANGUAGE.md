@@ -50,7 +50,8 @@ From higher to lower precedence:
 Arithmetic operators require numbers. Division and remainder by zero produce errors. The plus operator adds two numbers, or concatenates values as text if either operand is a string. Comparisons use strict equality for `==` and `!=`; relational comparisons follow JavaScript's ordering rules for the two evaluated values. Logical operators convert operands to booleans and short-circuit.
 
 ## Runtime behavior and limits
-- Values: numbers, strings, booleans.
+- Values: numbers, strings, booleans, and arrays.
+- Array literals use brackets, e.g. `[1, 2, 3]`. Arrays are mutable. Built-ins: `len(value)`, `push(array, value)`, `pop(array)`, `str(value)`, and `num(value)`.
 - Variables are declared once in a single global environment; assignment requires an existing variable.
 - Blocks do not introduce a separate lexical scope.
 - Execution stops after 10,000 executed statements.
@@ -60,7 +61,7 @@ Arithmetic operators require numbers. Division and remainder by zero produce err
 - Runtime errors stop the current program and display a message in the playground.
 
 ## Not implemented yet
-Functions, return, arrays, objects, user input, break/continue, imports/modules, file access, networking, concurrency, classes, static typing, and compilation to native or bytecode targets are not part of this interpreter. The Academy's broader syllabus is a roadmap for future study, not a claim that these features already run in BananaScript.
+User-defined functions, return, array indexing, objects, user input, break/continue, imports/modules, file access, networking, concurrency, classes, static typing, and compilation to native or bytecode targets are not part of this interpreter. The Academy's broader syllabus is a roadmap for future study, not a claim that these features already run in BananaScript.
 
 ## Implementation architecture
 1. **Tokenizer** converts characters into tokens.
