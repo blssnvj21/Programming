@@ -1,0 +1,18 @@
+{
+  "name": "BananaScript Academy",
+  "short_name": "BananaScript",
+  "description": "Learn programming with absurd examples and real concepts.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#06101d",
+  "theme_color": "#06101d",
+  "icons": [
+    {
+      "src": "assets/banana.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
