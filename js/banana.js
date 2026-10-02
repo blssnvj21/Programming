@@ -78,7 +78,8 @@ function parse(source){
   if(is('let')){take();const name=identifier();expect('=');const value=expression();if(is(';'))take();return{kind:'let',name,value};}
   if(is('print')){take();expect('(');const value=expression();expect(')');if(is(';'))take();return{kind:'print',value};}
   if(is('break')){if(loopDepth===0)throw Error('break can only be used inside a loop.');take();if(is(';'))take();return{kind:'break'};}
-  if(is('continue')){if(loopDepth===0)throw Error('continue can only be used inside a loop.');take();if(is(';'))take();return{kind:'continue'};}\n  if(is('repeat')){take();const count=expression();loopDepth++;const body=block();loopDepth--;return{kind:'repeat',count,body};}
+  if(is('continue')){if(loopDepth===0)throw Error('continue can only be used inside a loop.');take();if(is(';'))take();return{kind:'continue'};}
+  if(is('repeat')){take();const count=expression();loopDepth++;const body=block();loopDepth--;return{kind:'repeat',count,body};}
   if(is('while')){take();expect('(');const test=expression();expect(')');loopDepth++;const body=block();loopDepth--;return{kind:'while',test,body};}
   if(is('if')){take();expect('(');const test=expression();expect(')');const yes=block();let no=[];if(is('else')){take();if(is('if'))no=[statement()];else no=block();}return{kind:'if',test,yes,no};}
   if(peek().type==='id'){
