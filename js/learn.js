@@ -92,18 +92,23 @@ const lessonChecks=[
 {q:"When does the condition in panic_if choose its first block?",a:["When true","When false","Always"],c:0,why:"The first block runs when the condition is truthy."},
 {q:"What should you do first when a program errors?",a:["Rewrite everything","Read the error and locate the issue","Delete the compiler"],c:1,why:"Use the error message to narrow down the cause."},
 {q:"Four boxes hold six bananas each. Which expression calculates the total?",a:["4 + 6","4 * 6","4 == 6"],c:1,why:"Four groups of six means multiplication."},
-{q:"Which learning cycle builds understanding?",a:["Copy and move on","Predict, run, explain, modify","Guess until lucky"],c:1,why:"Prediction and explanation help reveal your mental model."},
 {q:"Which keyword declares a BananaScript function?",a:["function","recipe","def"],c:1,why:"BananaScript uses recipe to declare a function."},
 {q:"What is the index of the first array item?",a:["0","1","-1"],c:0,why:"BananaScript arrays use zero-based indexes."},
 {q:"What does sqrt(81) return?",a:["9","8","81"],c:0,why:"sqrt returns the square root of a non-negative number."},
-{q:"What happens if a recipe reaches its end without send_back?",a:["It returns null","It repeats forever","It prints the recipe"],c:0,why:"A function that falls through returns null."}
+{q:"What happens if a recipe reaches its end without send_back?",a:["It returns null","It repeats forever","It prints the recipe"],c:0,why:"A function that falls through returns null."},
+{q:"Which learning cycle builds understanding?",a:["Copy and move on","Predict, run, explain, modify","Guess until lucky"],c:1,why:"Prediction and explanation help reveal your mental model."}
 ];
 const challenges=[
 {title:"Challenge 01: Say hello",prompt:'Print the exact text Hello, world! (including punctuation).',code:'yeet("Hello, world!");',hint:'Use yeet("...") with the greeting inside quotes.',test:o=>o.trim()==="Hello, world!"},
 {title:"Challenge 02: Add numbers",prompt:"Display the result of 19 + 23.",code:"yeet(19 + 23);",hint:"Put the arithmetic expression inside yeet(...).",test:o=>o.trim()==="42"},
 {title:"Challenge 03: Make a variable",prompt:'Create snack containing "banana", then yeet it.',code:'hoard snack = "banana";\nyeet(snack);',hint:"Declare with hoard, then yeet the variable name.",test:o=>o.trim()==="banana"},
 {title:"Challenge 04: A tiny decision",prompt:'Set score to 10. If it is greater than 5, print "Passed"; otherwise print "Try again".',code:'hoard score = 10;\npanic_if (score > 5) {\n yeet("Passed");\n} cope_else {\n yeet("Try again");\n}',hint:"Use panic_if (score > 5) { ... } cope_else { ... }.",test:o=>o.trim()==="Passed"},
-{title:"Challenge 05: Repeat",prompt:'Use loop_de_loop 3 to yeet "Banana!" three times.',code:'loop_de_loop 3 {\n yeet("Banana!");\n}',hint:"Use loop_de_loop followed by the count and a block in braces.",test:o=>o.trim().split("\n").join("|")==="Banana!|Banana!|Banana!"}
+{title:"Challenge 05: Repeat",prompt:'Use loop_de_loop 3 to yeet "Banana!" three times.',code:'loop_de_loop 3 {\n yeet("Banana!");\n}',hint:"Use loop_de_loop followed by the count and a block in braces.",test:o=>o.trim().split("\n").join("|")==="Banana!|Banana!|Banana!"},
+{title:"Challenge 06: Make a recipe",prompt:"Write recipe double(n) that returns n * 2, then display double(21).",code:"recipe double(n) {\n  send_back n * 2;\n}\nyeet(double(21));",hint:"Declare with recipe, return with send_back, then call the function inside yeet(...).",test:o=>o.trim()==="42"},
+{title:"Challenge 07: Pick from an array",prompt:'Create fruits with "banana", "mango", and "pear". Display the second item.',code:'hoard fruits = ["banana", "mango", "pear"];\nyeet(fruits[1]);',hint:"Array indexes start at zero. The second item is index 1.",test:o=>o.trim()==="mango"},
+{title:"Challenge 08: Change an array item",prompt:'Create fruits with "banana" and "mango". Replace the second item with "plantain", then display it.',code:'hoard fruits = ["banana", "mango"];\nfruits[1] = "plantain";\nyeet(fruits[1]);',hint:"Use fruits[1] = ... to update an existing slot.",test:o=>o.trim()==="plantain"},
+{title:"Challenge 09: Count the fruit",prompt:'Create an array with three fruits and display how many it contains using len.',code:'hoard fruits = ["banana", "mango", "pear"];\nyeet(len(fruits));',hint:"len(array) returns the number of items.",test:o=>o.trim()==="3"},
+{title:"Challenge 10: Type detective",prompt:'Display the type of the number 42 using type().',code:'yeet(type(42));',hint:"Pass the value to type(...).",test:o=>o.trim()==="number"}
 ], quizzes=[
 {q:"What does yeet() do?",a:["Displays a value","Creates a variable","Repeats code"],c:0,why:"yeet() evaluates and displays its value."},
 {q:'Which is a number?',a:['"42"',"42","Both"],c:1,why:'Quotes make "42" text.'},
