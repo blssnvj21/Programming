@@ -20,7 +20,7 @@ yeet(fruit[1]);
 - `yeet(expression);` displays a value (`yell` is an alias).
 - `loop_de_loop count { ... }` repeats a block (`again` is an alias).
 - `panic_if (condition) { ... } cope_else { ... }` branches (`when` and `otherwise` are aliases).
-- `while (condition) { ... }` repeats while a condition is true.
+- `while (condition) { ... }` repeats while a condition is true. `break;` exits the nearest loop and `continue;` skips to its next iteration. `else if` chains are supported.
 - `recipe name(parameter, ...) { ... }` declares a function.
 - `send_back expression;` returns a value from a function. Bare `send_back;` returns no value (`null`).
 
@@ -44,7 +44,10 @@ Array literals: `[1, "two", true]`. Read an item with `items[0]`; update an exis
 - Runtime errors stop execution and display a message.
 
 ## Current limitations
-No objects, user input, break/continue, imports/modules, file access, networking, concurrency, classes, static typing, closures, or native/bytecode compilation. This is a learning language, not a production security sandbox. Do not run untrusted code in a privileged environment.
+No objects, user input, imports/modules, file access, networking, concurrency, classes, static typing, closures, or native/bytecode compilation. This is a learning language, not a production security sandbox. Do not run untrusted code in a privileged environment.
+
+## Compiler API
+`BananaScript.compile(source)` validates source and returns a versioned AST package. `BananaScript.run(source)` compiles that source through the same front end and executes the resulting AST. `BananaCompiler(source)` is the playground-compatible shorthand for the same path.
 
 ## Implementation
-Tokenizer → parser → AST → evaluator → browser UI. Source code is evaluated locally in the browser by the interpreter.
+Tokenizer → parser → AST compiler front end → evaluator → browser UI. Source code stays local to the browser; JavaScript source is never accepted as BananaScript.
