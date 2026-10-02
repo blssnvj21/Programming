@@ -117,6 +117,14 @@ function execute(ast){
     case 'contains':if(args.length!==2||!(typeof args[0]==='string'||Array.isArray(args[0])))throw Error('contains expects a string or array, then a value.');return typeof args[0]==='string'?(typeof args[1]==='string'&&args[0].includes(args[1])):args[0].some(v=>v===args[1]);
     case 'join':if(args.length!==2||!Array.isArray(args[0])||typeof args[1]!=='string')throw Error('join expects an array and a string separator.');return args[0].map(v=>v===null?'null':String(v)).join(args[1]);
     case 'split':if(args.length!==2||typeof args[0]!=='string'||typeof args[1]!=='string')throw Error('split expects a string and a string separator.');return args[0].split(args[1]);
+    case 'range':if(args.length<1||args.length>2||args.some(v=>typeof v!=='number'||!Number.isInteger(v)))throw Error('range expects one or two integers.');{const start=args.length===1?0:args[0],end=args.length===1?args[0]:args[1];if(end-start>1000)throw Error('range cannot create more than 1,001 values.');const r=[];const step=end>=start?1:-1;for(let x=start;x!==end;x+=step)r.push(x);return r;}
+    case 'sum':if(args.length!==1||!Array.isArray(args[0])||args[0].some(v=>typeof v!=='number'))throw Error('sum expects an array of numbers.');return args[0].reduce((a,b)=>a+b,0);
+    case 'reverse':if(args.length!==1||!Array.isArray(args[0]))throw Error('reverse expects one array.');args[0].reverse();return args[0];
+    case 'upper':if(args.length!==1||typeof args[0]!=='string')throw Error('upper expects one string.');return args[0].toUpperCase();
+    case 'lower':if(args.length!==1||typeof args[0]!=='string')throw Error('lower expects one string.');return args[0].toLowerCase();
+    case 'trim':if(args.length!==1||typeof args[0]!=='string')throw Error('trim expects one string.');return args[0].trim();
+    case 'replace':if(args.length!==3||typeof args[0]!=='string'||typeof args[1]!=='string'||typeof args[2]!=='string')throw Error('replace expects three strings.');return args[0].split(args[1]).join(args[2]);
+    case 'assert':if(args.length<1||args.length>2)throw Error('assert expects a condition and optional message.');if(!args[0])throw Error(args[1]===undefined?'Assertion failed.':String(args[1]));return true;
    }
    const fn=functions[n.name];if(!fn)throw Error('Unknown function: '+n.name+'.');
    if(args.length!==fn.params.length)throw Error(n.name+' expects '+fn.params.length+' argument(s), received '+args.length+'.');
@@ -142,7 +150,8 @@ function execute(ast){
  }}
  run(ast);return output;
 }
-function compile(source){const ast=parse(source);return {language:'BananaScript',version:'0.9',format:'AST',ast};}
+function compile(source){const ast=parse(source);return {language:'BananaScript',version:'0.10',format:'AST',ast,instructions:countNodes(ast)};}
+function countNodes(node){if(Array.isArray(node))return node.reduce((n,x)=>n+countNodes(x),0);if(!node||typeof node!=='object')return 1;return Object.keys(node).reduce((n,k)=>n+(k==='kind'?1:countNodes(node[k])),0);}
 window.BananaCompiler=function(source){return execute(compile(source).ast);};
-window.BananaScript={tokenize,parse,compile,execute,run:source=>execute(compile(source).ast)};
+window.BananaScript={tokenize,parse,compile,execute,run:source=>execute(compile(source).ast),version:'0.10'};
 })();
