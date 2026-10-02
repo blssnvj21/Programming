@@ -1,53 +1,63 @@
 # BananaScript Language Reference
-Version: 0.11 (loop controls, expanded standard library, safer ranges)
+Version: 0.12 (each loops, loop controls, expanded standard library, safer ranges)
 
-BananaScript is a small, interpreted, dynamically typed language. The browser playground tokenizes source, parses it into an abstract syntax tree, and evaluates that tree. The current runtime is BananaScript v0.11. It does not compile to machine code or execute JavaScript source.
+BananaScript is a small, interpreted, dynamically typed teaching language. The browser playground tokenizes source, parses it into an abstract syntax tree, and evaluates that tree. The current runtime is BananaScript v0.12. It does not compile to machine code or execute JavaScript source.
 
 ## Quick start
 
 ```banana
+hoard fruits = ["banana", "mango", "pear"];
+each fruit in fruits {
+  yeet(fruit);
+}
+
 recipe double(n) {
   send_back n * 2;
 }
-hoard fruit = ["banana", "mango", "pear"];
-fruit[1] = "plantain";
-yeet(double(len(fruit)));
-yeet(fruit[1]);
+yeet(double(21));
 ```
 
-## BananaScript keywords
+## Keywords and control flow
 - `hoard name = expression;` declares a variable (`stash` is an alias).
 - `yeet(expression);` displays a value (`yell` is an alias).
 - `loop_de_loop count { ... }` repeats a block (`again` is an alias).
-- `panic_if (condition) { ... } cope_else { ... }` branches (`when` and `otherwise` are aliases).
-- `while (condition) { ... }` repeats while a condition is true. `break;` exits the nearest loop and `continue;` skips to its next iteration. `else if` chains are supported.
+- `while (condition) { ... }` repeats while a condition is true.
+- `each item in collection { ... }` visits every element of an array or every character of a string.
+- `break;` exits the nearest loop. `continue;` skips to the next iteration.
+- `panic_if (condition) { ... } cope_else { ... }` branches (`when` and `otherwise` are aliases). `else if` chains are supported.
 - `recipe name(parameter, ...) { ... }` declares a function.
-- `send_back expression;` returns a value from a function. Bare `send_back;` returns no value (`null`).
+- `send_back expression;` returns a value from a function. Bare `send_back;` returns `null`.
 
 ## Values and expressions
-Values are numbers, strings, booleans, arrays, and `null`. The `null` keyword is a literal representing the absence of a value; a function that reaches its end also returns `null`. Strings use single or double quotes; escapes include `\\n`, `\\t`, `\\r`, and escaped characters. `//` starts a line comment. Semicolons are optional after simple statements.
+Values are numbers, strings, booleans, arrays, and `null`. Strings use single or double quotes; escapes include `\\n`, `\\t`, `\\r`, and escaped characters. `//` starts a line comment. Semicolons are optional after simple statements.
 
 Operators, from higher to lower precedence: parentheses/indexing, unary `-` and `!`, `*` `/` `%`, `+` `-`, comparisons, `&&`, `||`.
 
 ## Functions
-Functions accept comma-separated parameters and return values using `send_back`. Calls use `name(arguments)`. Parameters and variables declared inside a function are local to that call; assignments update the nearest existing variable, so a function can update a global variable if no local variable shadows it. Functions can call other functions and recurse, with a call-depth limit of 100. Arguments are evaluated before the call. Function declarations become available when execution reaches the declaration.
+Functions accept comma-separated parameters and return values using `send_back`. Parameters and variables declared inside a function are local to that call. Functions can call other functions and recurse, with a call-depth limit of 100.
 
-## Arrays
-Array literals: `[1, "two", true]`. Read an item with `items[0]`; update an existing item with `items[0] = "new"`. Indexes are zero-based integers. Out-of-range reads and writes produce errors. Strings can be indexed to read a one-character string, but cannot be assigned through an index. Arrays are mutable and passed by reference. Built-ins: `len(value)`, `push(array, value)`, `pop(array)`, `str(value)`, `num(value)`, `type(value)`, `abs(number)`, `floor(number)`, `ceil(number)`, `round(number)`, `sqrt(non_negative_number)`, `min(number, ...)`, `max(number, ...)`, `contains(string_or_array, value)`, `join(array, separator)`, `split(string, separator)`, `range(end)` / `range(start, end)`, `sum(array)`, `reverse(array)`, `upper(string)`, `lower(string)`, `trim(string)`, `replace(string, old, new)`, and `assert(condition, message)`. `range` creates integer sequences with a safety limit; `reverse` mutates and returns its array. `contains` checks substring presence or strict-equality array membership. `join` converts array items to strings (`null` becomes `"null"`); `split` returns an array of strings. `type` returns `number`, `string`, `boolean`, `array`, or `null`. Numeric helpers reject non-numbers; `sqrt` rejects negative values.
+## Arrays and strings
+Array literals use `[1, "two", true]`. Read an item with `items[0]`; update an existing array item with `items[0] = "new"`. Indexes are zero-based. Strings can be indexed for reading but not indexed assignment. Arrays are mutable and passed by reference.
+
+The `each` loop does not expose a special index variable: use `range(len(items))` when you need numeric indexes.
+
+## Standard library
+`len(value)`, `push(array, value)`, `pop(array)`, `str(value)`, `num(value)`, `type(value)`, `abs(number)`, `floor(number)`, `ceil(number)`, `round(number)`, `sqrt(non_negative_number)`, `min(number, ...)`, `max(number, ...)`, `contains(string_or_array, value)`, `join(array, separator)`, `split(string, separator)`, `range(end)` / `range(start, end)`, `sum(array)`, `reverse(array)`, `upper(string)`, `lower(string)`, `trim(string)`, `replace(string, old, new)`, and `assert(condition, message)`.
+
+`range` creates integer sequences without including the end value and has a maximum span of 1,000 values. `reverse` mutates and returns its array. `contains` checks substring presence or strict-equality array membership.
 
 ## Runtime limits
 - 10,000 executed statements per run.
 - `loop_de_loop` accepts an integer from 0 through 1,000.
-- Each `while` statement is limited to 1,000 iterations.
+- Each `while` and `each` loop is protected by the interpreter's execution-step limit; `while` also has a 1,000-iteration limit.
 - 500 output lines.
 - Function call depth is limited to 100.
-- Runtime errors stop execution and display a message.
-
-## Current limitations
-No objects, user input, imports/modules, file access, networking, concurrency, classes, static typing, closures, or native/bytecode compilation. This is a learning language, not a production security sandbox. Do not run untrusted code in a privileged environment.
 
 ## Compiler API
-`BananaScript.compile(source)` validates source and returns a versioned AST package containing an instruction/node count for inspection. `BananaScript.run(source)` compiles that source through the same front end and executes the resulting AST. `BananaCompiler(source)` is the playground-compatible shorthand for the same path.
+`BananaScript.compile(source)` validates source and returns a versioned AST package containing an instruction/node count. `BananaScript.run(source)` compiles through the same front end and executes the AST. `BananaCompiler(source)` is the playground-compatible shorthand.
+
+## Current limitations
+No objects, user input, imports/modules, file access, networking, concurrency, classes, static typing, closures, or native/bytecode compilation. Unsupported advanced topics in the Academy are learning concepts, not hidden BananaScript syntax.
 
 ## Implementation
-Tokenizer → parser → AST compiler front end → evaluator → browser UI. Source code stays local to the browser; JavaScript source is never accepted as BananaScript.
+Tokenizer → parser → AST → evaluator → browser UI. Source stays local to the browser; JavaScript source is never accepted as BananaScript.
