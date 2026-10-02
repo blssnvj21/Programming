@@ -78,6 +78,11 @@ function execute(ast){
     case 'ceil':if(args.length!==1||typeof args[0]!=='number')throw Error('ceil expects one number.');return Math.ceil(args[0]);
     case 'round':if(args.length!==1||typeof args[0]!=='number')throw Error('round expects one number.');return Math.round(args[0]);
     case 'sqrt':if(args.length!==1||typeof args[0]!=='number'||args[0]<0)throw Error('sqrt expects one non-negative number.');return Math.sqrt(args[0]);
+    case 'min':if(args.length<1||args.some(v=>typeof v!=='number'))throw Error('min expects one or more numbers.');return Math.min(...args);
+    case 'max':if(args.length<1||args.some(v=>typeof v!=='number'))throw Error('max expects one or more numbers.');return Math.max(...args);
+    case 'contains':if(args.length!==2||!(typeof args[0]==='string'||Array.isArray(args[0])))throw Error('contains expects a string or array, then a value.');return typeof args[0]==='string'?(typeof args[1]==='string'&&args[0].includes(args[1])):args[0].some(v=>v===args[1]);
+    case 'join':if(args.length!==2||!Array.isArray(args[0])||typeof args[1]!=='string')throw Error('join expects an array and a string separator.');return args[0].map(v=>v===null?'null':String(v)).join(args[1]);
+    case 'split':if(args.length!==2||typeof args[0]!=='string'||typeof args[1]!=='string')throw Error('split expects a string and a string separator.');return args[0].split(args[1]);
    }
    const fn=functions[n.name];if(!fn)throw Error('Unknown function: '+n.name+'.');
    if(args.length!==fn.params.length)throw Error(n.name+' expects '+fn.params.length+' argument(s), received '+args.length+'.');
