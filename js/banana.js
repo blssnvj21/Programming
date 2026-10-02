@@ -3,7 +3,7 @@
 /*
  * BananaScript compiler/runtime core.
  * Pipeline: source -> tokens -> AST -> interpreter.
- * v0.10 adds loop controls, else-if, and an expanded standard library.
+ * v0.11 adds loop controls, else-if, safer ranges, and structured diagnostics.
  * Kept separate from page UI so Academy and Playground execute
  * exactly the same BananaScript implementation.
  */
@@ -119,7 +119,7 @@ function execute(ast){
     case 'contains':if(args.length!==2||!(typeof args[0]==='string'||Array.isArray(args[0])))throw Error('contains expects a string or array, then a value.');return typeof args[0]==='string'?(typeof args[1]==='string'&&args[0].includes(args[1])):args[0].some(v=>v===args[1]);
     case 'join':if(args.length!==2||!Array.isArray(args[0])||typeof args[1]!=='string')throw Error('join expects an array and a string separator.');return args[0].map(v=>v===null?'null':String(v)).join(args[1]);
     case 'split':if(args.length!==2||typeof args[0]!=='string'||typeof args[1]!=='string')throw Error('split expects a string and a string separator.');return args[0].split(args[1]);
-    case 'range':if(args.length<1||args.length>2||args.some(v=>typeof v!=='number'||!Number.isInteger(v)))throw Error('range expects one or two integers.');{const start=args.length===1?0:args[0],end=args.length===1?args[0]:args[1];if(end-start>1000)throw Error('range cannot create more than 1,001 values.');const r=[];const step=end>=start?1:-1;for(let x=start;x!==end;x+=step)r.push(x);return r;}
+    case 'range':if(args.length<1||args.length>2||args.some(v=>typeof v!=='number'||!Number.isInteger(v)))throw Error('range expects one or two integers.');{const start=args.length===1?0:args[0],end=args.length===1?args[0]:args[1];if(Math.abs(end-start)>1000)throw Error('range cannot create more than 1,001 values.');const r=[];const step=end>=start?1:-1;for(let x=start;x!==end;x+=step)r.push(x);return r;}
     case 'sum':if(args.length!==1||!Array.isArray(args[0])||args[0].some(v=>typeof v!=='number'))throw Error('sum expects an array of numbers.');return args[0].reduce((a,b)=>a+b,0);
     case 'reverse':if(args.length!==1||!Array.isArray(args[0]))throw Error('reverse expects one array.');args[0].reverse();return args[0];
     case 'upper':if(args.length!==1||typeof args[0]!=='string')throw Error('upper expects one string.');return args[0].toUpperCase();
@@ -153,8 +153,8 @@ function execute(ast){
  }}
  run(ast);return output;
 }
-function compile(source){const ast=parse(source);return {language:'BananaScript',version:'0.10',format:'AST',ast,instructions:countNodes(ast)};}
+function compile(source){const ast=parse(source);return {language:'BananaScript',version:'0.11',format:'AST',ast,instructions:countNodes(ast)};}
 function countNodes(node){if(Array.isArray(node))return node.reduce((n,x)=>n+countNodes(x),0);if(!node||typeof node!=='object')return 1;return Object.keys(node).reduce((n,k)=>n+(k==='kind'?1:countNodes(node[k])),0);}
 window.BananaCompiler=function(source){return execute(compile(source).ast);};
-window.BananaScript={tokenize,parse,compile,execute,run:source=>execute(compile(source).ast),version:'0.10'};
+window.BananaScript={tokenize,parse,compile,execute,run:source=>execute(compile(source).ast),version:'0.11'};
 })();
