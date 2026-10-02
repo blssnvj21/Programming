@@ -1,4 +1,4 @@
-const CACHE="bananascript-v17";
+const CACHE="bananascript-v18";
 const ASSETS=["./","./index.html","./learn.html","./css/style.css","./css/learn.css","./js/app.js","./js/learn.js","./js/pwa.js","./manifest.webmanifest","./assets/banana.svg"];
 
 self.addEventListener("install",event=>{
