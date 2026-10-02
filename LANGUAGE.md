@@ -1,5 +1,5 @@
 # BananaScript Language Reference
-Version: 0.7 (collection and string helpers)
+Version: 0.8 (null literals and standard library)
 
 BananaScript is a small, interpreted, dynamically typed language. The browser playground tokenizes source, parses it into an abstract syntax tree, and evaluates that tree. It does not compile to machine code or execute JavaScript source.
 
@@ -25,7 +25,7 @@ yeet(fruit[1]);
 - `send_back expression;` returns a value from a function. Bare `send_back;` returns no value (`null`).
 
 ## Values and expressions
-Values are numbers, strings, booleans, arrays, and null (as a function's implicit return value). Strings use single or double quotes; escapes include `\\n`, `\\t`, `\\r`, and escaped characters. `//` starts a line comment. Semicolons are optional after simple statements.
+Values are numbers, strings, booleans, arrays, and `null`. The `null` keyword is a literal representing the absence of a value; a function that reaches its end also returns `null`. Strings use single or double quotes; escapes include `\\n`, `\\t`, `\\r`, and escaped characters. `//` starts a line comment. Semicolons are optional after simple statements.
 
 Operators, from higher to lower precedence: parentheses/indexing, unary `-` and `!`, `*` `/` `%`, `+` `-`, comparisons, `&&`, `||`.
 
