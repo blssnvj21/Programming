@@ -1,6 +1,6 @@
 "use strict";
-const CACHE="bananascript-v23";
-const ASSETS=["./","./index.html","./learn.html","./css/style.css","./css/learn.css","./js/app.js","./js/learn.js","./js/pwa.js","./manifest.webmanifest","./assets/banana.svg"];
+const CACHE="bananascript-v24";
+const ASSETS=["./","./index.html","./learn.html","./css/style.css","./css/learn.css","./js/banana.js","./js/app.js","./js/learn.js","./js/pwa.js","./manifest.webmanifest","./assets/banana.svg"];
 
 self.addEventListener("install",event=>{
   event.waitUntil(
