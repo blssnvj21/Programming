@@ -72,6 +72,12 @@ function execute(ast){
     case 'pop':if(args.length!==1||!Array.isArray(args[0]))throw Error('pop expects one array.');return args[0].pop();
     case 'str':if(args.length!==1)throw Error('str expects one argument.');return String(args[0]);
     case 'num':if(args.length!==1||typeof args[0]==='boolean'||args[0]===''||!Number.isFinite(Number(args[0])))throw Error('num expects a numeric value.');return Number(args[0]);
+    case 'type':if(args.length!==1)throw Error('type expects one argument.');return args[0]===null?'null':Array.isArray(args[0])?'array':typeof args[0];
+    case 'abs':if(args.length!==1||typeof args[0]!=='number')throw Error('abs expects one number.');return Math.abs(args[0]);
+    case 'floor':if(args.length!==1||typeof args[0]!=='number')throw Error('floor expects one number.');return Math.floor(args[0]);
+    case 'ceil':if(args.length!==1||typeof args[0]!=='number')throw Error('ceil expects one number.');return Math.ceil(args[0]);
+    case 'round':if(args.length!==1||typeof args[0]!=='number')throw Error('round expects one number.');return Math.round(args[0]);
+    case 'sqrt':if(args.length!==1||typeof args[0]!=='number'||args[0]<0)throw Error('sqrt expects one non-negative number.');return Math.sqrt(args[0]);
    }
    const fn=functions[n.name];if(!fn)throw Error('Unknown function: '+n.name+'.');
    if(args.length!==fn.params.length)throw Error(n.name+' expects '+fn.params.length+' argument(s), received '+args.length+'.');
@@ -86,7 +92,7 @@ function execute(ast){
  }
  function run(list){for(const s of list){if(++steps>maxSteps)throw Error('Execution limit reached (10,000 statements).');
   if(s.kind==='func'){if(Object.prototype.hasOwnProperty.call(functions,s.name))throw Error('Function "'+s.name+'" is already declared.');functions[s.name]=s;}
-  else if(s.kind==='return')throw {isBananaReturn:true,value:evaluate(s.value)};
+  else if(s.kind==='return'){if(callDepth===0)throw Error('send_back can only be used inside a recipe.');throw {isBananaReturn:true,value:evaluate(s.value)};}
   else if(s.kind==='let'){if(Object.prototype.hasOwnProperty.call(scopes[scopes.length-1],s.name))throw Error('"'+s.name+'" is already declared in this scope.');scopes[scopes.length-1][s.name]=evaluate(s.value);}
   else if(s.kind==='assign')assign(s.name,evaluate(s.value));
   else if(s.kind==='indexAssign'){const arr=lookup(s.name),idx=evaluate(s.index),v=evaluate(s.value);if(!Array.isArray(arr))throw Error('Indexed assignment requires an array variable.');if(!Number.isInteger(idx)||idx<0||idx>=arr.length)throw Error('Index is out of range.');arr[idx]=v;}
