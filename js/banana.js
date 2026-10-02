@@ -1,12 +1,12 @@
 "use strict";
 
-/*
- * BananaScript compiler/runtime core.
- * Pipeline: source -> tokens -> AST -> interpreter.
- * v0.11 adds loop controls, else-if, safer ranges, and structured diagnostics.
- * Kept separate from page UI so Academy and Playground execute
- * exactly the same BananaScript implementation.
- */
+ /*
+  * BananaScript compiler/runtime core.
+  * Pipeline: source -> tokens -> AST -> interpreter.
+  * v0.12 adds each loops, safer ranges, and a cleaner runtime API.
+  * Kept separate from page UI so Academy and Playground execute
+  * exactly the same BananaScript implementation.
+  */
 (function(){
 function tokenize(source) {
   const tokens=[]; let i=0;
@@ -81,6 +81,7 @@ function parse(source){
   if(is('continue')){if(loopDepth===0)throw Error('continue can only be used inside a loop.');take();if(is(';'))take();return{kind:'continue'};}
   if(is('repeat')){take();const count=expression();loopDepth++;const body=block();loopDepth--;return{kind:'repeat',count,body};}
   if(is('while')){take();expect('(');const test=expression();expect(')');loopDepth++;const body=block();loopDepth--;return{kind:'while',test,body};}
+  if(is('each')){take();const name=identifier();expect('in');const source=expression();loopDepth++;const body=block();loopDepth--;return{kind:'each',name,source,body};}
   if(is('if')){take();expect('(');const test=expression();expect(')');const yes=block();let no=[];if(is('else')){take();if(is('if'))no=[statement()];else no=block();}return{kind:'if',test,yes,no};}
   if(peek().type==='id'){
     const name=take().value;
@@ -120,7 +121,7 @@ function execute(ast){
     case 'contains':if(args.length!==2||!(typeof args[0]==='string'||Array.isArray(args[0])))throw Error('contains expects a string or array, then a value.');return typeof args[0]==='string'?(typeof args[1]==='string'&&args[0].includes(args[1])):args[0].some(v=>v===args[1]);
     case 'join':if(args.length!==2||!Array.isArray(args[0])||typeof args[1]!=='string')throw Error('join expects an array and a string separator.');return args[0].map(v=>v===null?'null':String(v)).join(args[1]);
     case 'split':if(args.length!==2||typeof args[0]!=='string'||typeof args[1]!=='string')throw Error('split expects a string and a string separator.');return args[0].split(args[1]);
-    case 'range':if(args.length<1||args.length>2||args.some(v=>typeof v!=='number'||!Number.isInteger(v)))throw Error('range expects one or two integers.');{const start=args.length===1?0:args[0],end=args.length===1?args[0]:args[1];if(Math.abs(end-start)>1000)throw Error('range cannot create more than 1,001 values.');const r=[];const step=end>=start?1:-1;for(let x=start;x!==end;x+=step)r.push(x);return r;}
+    case 'range':if(args.length<1||args.length>2||args.some(v=>typeof v!=='number'||!Number.isInteger(v)))throw Error('range expects one or two integers.');{const start=args.length===1?0:args[0],end=args.length===1?args[0]:args[1];if(Math.abs(end-start)>1000)throw Error('range cannot create more than 1000 values.');const r=[];const step=end>=start?1:-1;for(let x=start;x!==end;x+=step)r.push(x);return r;}
     case 'sum':if(args.length!==1||!Array.isArray(args[0])||args[0].some(v=>typeof v!=='number'))throw Error('sum expects an array of numbers.');return args[0].reduce((a,b)=>a+b,0);
     case 'reverse':if(args.length!==1||!Array.isArray(args[0]))throw Error('reverse expects one array.');args[0].reverse();return args[0];
     case 'upper':if(args.length!==1||typeof args[0]!=='string')throw Error('upper expects one string.');return args[0].toUpperCase();
@@ -151,11 +152,12 @@ function execute(ast){
   else if(s.kind==='if')run(evaluate(s.test)?s.yes:s.no);
   else if(s.kind==='repeat'){const count=evaluate(s.count);if(!Number.isInteger(count)||count<0||count>1000)throw Error('repeat requires an integer from 0 to 1000.');for(let i=0;i<count;i++){try{run(s.body);}catch(e){if(e&&e.bananaControl==='break')break;if(e&&e.bananaControl==='continue')continue;throw e;}}}
   else if(s.kind==='while'){let turns=0;while(evaluate(s.test)){if(++turns>1000)throw Error('while loop limit reached (1,000 iterations).');try{run(s.body);}catch(e){if(e&&e.bananaControl==='break')break;if(e&&e.bananaControl==='continue')continue;throw e;}}}
+  else if(s.kind==='each'){const values=evaluate(s.source);if(typeof values!=='string'&&!Array.isArray(values))throw Error('each expects an array or string.');for(const value of values){if(Object.prototype.hasOwnProperty.call(scopes[scopes.length-1],s.name))scopes[scopes.length-1][s.name]=value;else scopes[scopes.length-1][s.name]=value;try{run(s.body);}catch(e){if(e&&e.bananaControl==='break')break;if(e&&e.bananaControl==='continue')continue;throw e;}}}
  }}
  run(ast);return output;
 }
-function compile(source){const ast=parse(source);return {language:'BananaScript',version:'0.11',format:'AST',ast,instructions:countNodes(ast)};}
+function compile(source){const ast=parse(source);return {language:'BananaScript',version:'0.12',format:'AST',ast,instructions:countNodes(ast)};}
 function countNodes(node){if(Array.isArray(node))return node.reduce((n,x)=>n+countNodes(x),0);if(!node||typeof node!=='object')return 1;return Object.keys(node).reduce((n,k)=>n+(k==='kind'?1:countNodes(node[k])),0);}
 window.BananaCompiler=function(source){return execute(compile(source).ast);};
-window.BananaScript={tokenize,parse,compile,execute,run:source=>execute(compile(source).ast),version:'0.11'};
+window.BananaScript={tokenize,parse,compile,execute,run:source=>execute(compile(source).ast),version:'0.12'};
 })();
