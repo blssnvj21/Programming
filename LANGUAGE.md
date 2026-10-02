@@ -1,5 +1,5 @@
 # BananaScript Language Reference
-Version: 0.6 (standard library and diagnostics)
+Version: 0.7 (collection and string helpers)
 
 BananaScript is a small, interpreted, dynamically typed language. The browser playground tokenizes source, parses it into an abstract syntax tree, and evaluates that tree. It does not compile to machine code or execute JavaScript source.
 
@@ -33,7 +33,7 @@ Operators, from higher to lower precedence: parentheses/indexing, unary `-` and 
 Functions accept comma-separated parameters and return values using `send_back`. Calls use `name(arguments)`. Parameters and variables declared inside a function are local to that call; assignments update the nearest existing variable, so a function can update a global variable if no local variable shadows it. Functions can call other functions and recurse, with a call-depth limit of 100. Arguments are evaluated before the call. Function declarations become available when execution reaches the declaration.
 
 ## Arrays
-Array literals: `[1, "two", true]`. Read an item with `items[0]`; update an existing item with `items[0] = "new"`. Indexes are zero-based integers. Out-of-range reads and writes produce errors. Strings can be indexed to read a one-character string, but cannot be assigned through an index. Arrays are mutable and passed by reference. Built-ins: `len(value)`, `push(array, value)`, `pop(array)`, `str(value)`, `num(value)`, `type(value)`, `abs(number)`, `floor(number)`, `ceil(number)`, `round(number)`, and `sqrt(non_negative_number)`. `type` returns `number`, `string`, `boolean`, `array`, or `null`. Numeric helpers reject non-numbers; `sqrt` rejects negative values.
+Array literals: `[1, "two", true]`. Read an item with `items[0]`; update an existing item with `items[0] = "new"`. Indexes are zero-based integers. Out-of-range reads and writes produce errors. Strings can be indexed to read a one-character string, but cannot be assigned through an index. Arrays are mutable and passed by reference. Built-ins: `len(value)`, `push(array, value)`, `pop(array)`, `str(value)`, `num(value)`, `type(value)`, `abs(number)`, `floor(number)`, `ceil(number)`, `round(number)`, and `sqrt(non_negative_number)`, `min(number, ...)`, `max(number, ...)`, `contains(string_or_array, value)`, `join(array, separator)`, and `split(string, separator)`. `contains` checks substring presence or strict-equality array membership. `join` converts array items to strings (`null` becomes `"null"`); `split` returns an array of strings. `type` returns `number`, `string`, `boolean`, `array`, or `null`. Numeric helpers reject non-numbers; `sqrt` rejects negative values.
 
 ## Runtime limits
 - 10,000 executed statements per run.
