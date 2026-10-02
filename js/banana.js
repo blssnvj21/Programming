@@ -142,6 +142,7 @@ function execute(ast){
  }}
  run(ast);return output;
 }
-window.BananaCompiler=function(source){return execute(parse(source));};
-window.BananaScript={tokenize,parse,execute,compile:source=>parse(source),run:source=>execute(parse(source))};
+function compile(source){const ast=parse(source);return {language:'BananaScript',version:'0.9',format:'AST',ast};}
+window.BananaCompiler=function(source){return execute(compile(source).ast);};
+window.BananaScript={tokenize,parse,compile,execute,run:source=>execute(compile(source).ast)};
 })();
