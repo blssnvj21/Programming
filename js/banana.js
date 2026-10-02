@@ -2,7 +2,8 @@
 
 /*
  * BananaScript compiler/runtime core.
- * Pipeline: source -> tokens -> AST -> interpreter.\n * v0.9 adds break/continue and else-if control flow.
+ * Pipeline: source -> tokens -> AST -> interpreter.
+ * v0.10 adds loop controls, else-if, and an expanded standard library.
  * Kept separate from page UI so Academy and Playground execute
  * exactly the same BananaScript implementation.
  */
@@ -76,7 +77,8 @@ function parse(source){
   if(is('return')){take();const value=is(';')||is('}')?{kind:'literal',value:null}:expression();if(is(';'))take();return{kind:'return',value};}
   if(is('let')){take();const name=identifier();expect('=');const value=expression();if(is(';'))take();return{kind:'let',name,value};}
   if(is('print')){take();expect('(');const value=expression();expect(')');if(is(';'))take();return{kind:'print',value};}
-  if(is('break')){if(loopDepth===0)throw Error('break can only be used inside a loop.');take();if(is(';'))take();return{kind:'break'};}\n  if(is('continue')){if(loopDepth===0)throw Error('continue can only be used inside a loop.');take();if(is(';'))take();return{kind:'continue'};}\n  if(is('repeat')){take();const count=expression();loopDepth++;const body=block();loopDepth--;return{kind:'repeat',count,body};}
+  if(is('break')){if(loopDepth===0)throw Error('break can only be used inside a loop.');take();if(is(';'))take();return{kind:'break'};}
+  if(is('continue')){if(loopDepth===0)throw Error('continue can only be used inside a loop.');take();if(is(';'))take();return{kind:'continue'};}\n  if(is('repeat')){take();const count=expression();loopDepth++;const body=block();loopDepth--;return{kind:'repeat',count,body};}
   if(is('while')){take();expect('(');const test=expression();expect(')');loopDepth++;const body=block();loopDepth--;return{kind:'while',test,body};}
   if(is('if')){take();expect('(');const test=expression();expect(')');const yes=block();let no=[];if(is('else')){take();if(is('if'))no=[statement()];else no=block();}return{kind:'if',test,yes,no};}
   if(peek().type==='id'){
@@ -139,7 +141,8 @@ function execute(ast){
  }
  function run(list){for(const s of list){if(++steps>maxSteps)throw Error('Execution limit reached (10,000 statements).');
   if(s.kind==='func'){if(Object.prototype.hasOwnProperty.call(functions,s.name))throw Error('Function "'+s.name+'" is already declared.');functions[s.name]=s;}
-  else if(s.kind==='break'||s.kind==='continue'){throw {bananaControl:s.kind};}\n  else if(s.kind==='return'){if(callDepth===0)throw Error('send_back can only be used inside a recipe.');throw {isBananaReturn:true,value:evaluate(s.value)};}
+  else if(s.kind==='break'||s.kind==='continue'){throw {bananaControl:s.kind};}
+  else if(s.kind==='return'){if(callDepth===0)throw Error('send_back can only be used inside a recipe.');throw {isBananaReturn:true,value:evaluate(s.value)};}
   else if(s.kind==='let'){if(Object.prototype.hasOwnProperty.call(scopes[scopes.length-1],s.name))throw Error('"'+s.name+'" is already declared in this scope.');scopes[scopes.length-1][s.name]=evaluate(s.value);}
   else if(s.kind==='assign')assign(s.name,evaluate(s.value));
   else if(s.kind==='indexAssign'){const arr=lookup(s.name),idx=evaluate(s.index),v=evaluate(s.value);if(!Array.isArray(arr))throw Error('Indexed assignment requires an array variable.');if(!Number.isInteger(idx)||idx<0||idx>=arr.length)throw Error('Index is out of range.');arr[idx]=v;}
