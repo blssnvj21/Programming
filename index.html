@@ -7,7 +7,7 @@
   <meta name="description" content="BananaScript: a deeply unserious programming language with a surprisingly real browser compiler.">
   <title>BananaScript — Code. Confuse. Commit.</title>
   <link rel="stylesheet" href="css/style.css">
-  <script src="js/app.js" defer></script><script src="js/pwa.js" defer></script>
+  <script src="js/banana.js?v=2" defer></script><script src="js/app.js?v=2" defer></script><script src="js/pwa.js" defer></script>
 </head>
 <body>
 <header class="topbar">
@@ -27,7 +27,7 @@
       <h1>The world's most <span>serious</span> programming language.</h1>
       <p>BananaScript is a powerful, flexible, and emotionally ripe language for building anything from tiny scripts to systems that should probably have been an email.</p>
       <div class="actions"><a class="btn primary" href="#playground">🍌 Start compiling</a><a class="btn" href="learn.html">▤ Start the full course</a></div>
-      <div class="micro">BananaScript v0.8 · interpreted locally · compiler inspected by a monkey</div>
+      <div class="micro">BananaScript v0.8 · parsed + executed locally · compiler/runtime inspected by a monkey</div>
     </div>
     <div class="hero-art" aria-label="A banana in a cosmic programming universe">
       <div class="planet"></div><div class="bigbanana" aria-hidden="true">🍌</div>
@@ -54,7 +54,7 @@
     <section class="panel" id="playground">
       <div class="panelhead"><h2>⌨ Try the Compiler</h2><span class="pill" id="compilerState">READY-ish</span></div>
       <div class="panelbody">
-        <p class="intro">Write BananaScript, then press Run. This little browser compiler actually executes the supported language. No server. No database. No fruit license.</p>
+        <p class="intro">Write BananaScript, then press Run. This little browser compiler actually parses and executes the supported BananaScript language. No server. No database. No fruit license.</p>
         <div class="codebox">
           <div class="editorbar"><span><i class="dot red"></i><i class="dot yellow"></i><i class="dot green"></i> &nbsp;untitled.banana</span><span>UTF-8 · BananaScript</span></div>
           <label class="sr" for="editor">BananaScript code editor</label>
