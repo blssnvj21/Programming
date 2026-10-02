@@ -104,6 +104,19 @@ yeet(max(8, 3, 11));
 yeet(contains(["banana", "pear"], "pear"));</pre><p>Use <code>push</code> to add an array item, <code>pop</code> to remove the last item, and <code>len</code> to count characters or items. Consult the language reference for exact argument rules.</p>`],
 [ "Testing, projects, and next languages","15 min","From exercises to software",`<h1>20 · Testing, projects, and next languages</h1><p>A program that works for one example may fail on another. Test normal cases, boundary cases, and unexpected values.</p><ol><li>Write down the expected result before running.</li><li>Try at least three different inputs.</li><li>Check empty collections and zero where relevant.</li><li>Read errors instead of hiding them.</li><li>Explain the algorithm in plain language.</li></ol><h2>Choose a next project</h2><ul><li>Fruit inventory with stock, sales, and totals.</li><li>Quiz grader with a score and feedback.</li><li>Shopping list using arrays and helper functions.</li></ul><p>BananaScript teaches fundamentals. For files, web servers, databases, classes, and larger applications, learn a general-purpose language and its tools.</p>`]
 
+,
+[ "Thinking in algorithms","14 min","Plan before coding",`<h1>21 · Thinking in algorithms</h1><p>Before writing code, describe the solution as small steps. Then check whether every step is precise enough that a computer could follow it.</p><ol><li>State the problem.</li><li>Identify the inputs and expected output.</li><li>Write the steps in plain language.</li><li>Try a tiny example by hand.</li><li>Translate the steps into BananaScript.</li><li>Test a normal case and an edge case.</li></ol><div class="concept-callout"><strong>Algorithm ≠ code</strong><br>The algorithm is the method. Code is one way to express that method in a language.</div>`],
+[ "Nested data and careful tracing","12 min","Collections",`<h1>22 · Nested data and careful tracing</h1><p>An array can contain other arrays. Read indexes from the outside in: the first index selects an outer item, and the next selects an item inside it.</p><pre>hoard rows = [[1, 2], [3, 4]];
+yeet(rows[0][1]);
+yeet(rows[1][0]);</pre><p>Trace each lookup one step at a time. Nested structures are useful for grids, tables, and grouped data.</p>`],
+[ "Scope, mutation, and side effects","14 min","Reason about changes",`<h1>23 · Scope, mutation, and side effects</h1><p>Scope determines where a name can be found. Mutation changes an existing value. A side effect is an observable change, such as printing or modifying an array.</p><pre>recipe add_one(n) {
+  send_back n + 1;
+}
+hoard answer = add_one(4);
+yeet(answer);</pre><p>Prefer functions with clear inputs and outputs. When a function changes shared data, make that behavior obvious and test it.</p>`],
+[ "Big-O without the academic fog","15 min","Efficiency",`<h1>24 · Big-O without the academic fog</h1><p>Big-O describes how an algorithm's work grows as input size grows. It does not tell you the exact time on every computer.</p><ul><li><strong>O(1):</strong> roughly constant work.</li><li><strong>O(n):</strong> work grows with the number of items.</li><li><strong>O(n²):</strong> work can grow with the square of the input size.</li></ul><p>A simple scan through an array is O(n): in the worst case, it checks every item. First make the answer correct; then measure before optimizing.</p>`],
+[ "From BananaScript to real languages","15 min","Transfer your skills",`<h1>25 · From BananaScript to real languages</h1><p>Concepts transfer; syntax and available tools do not automatically transfer. Choose a language based on what you want to build.</p><ul><li><strong>JavaScript:</strong> browser interfaces and JavaScript-based servers.</li><li><strong>Python:</strong> scripting, automation, data work, and many beginner projects.</li><li><strong>C or C++:</strong> systems programming and explicit low-level concepts.</li></ul><p>Learn the language's official syntax, standard library, package tools, debugging workflow, and testing approach. Rebuild a BananaScript project in the new language instead of memorizing syntax in isolation.</p>`]
+
 ];
 const lessonChecks=[
 {q:"What appears first?",a:["Second","First","Both on one line"],c:1,why:"Statements execute in source order."},
@@ -126,7 +139,12 @@ const lessonChecks=[
 {q:"What must a while loop eventually do to finish?",a:["Make its condition false","Print a message","Declare a function"],c:0,why:"A condition-controlled loop ends when its condition is false."},
 {q:"What is an algorithm?",a:["A precise set of steps to solve a problem","A variable name","A type of computer screen"],c:0,why:"Algorithms describe steps for solving a problem."},
 {q:"What does max(8, 3, 11) return?",a:["3","8","11"],c:2,why:"max returns the largest supplied number."},
-{q:"Why test multiple cases?",a:["To discover cases the first example misses","To make code longer","To avoid understanding it"],c:0,why:"Different and boundary cases reveal hidden bugs."}
+{q:"Why test multiple cases?",a:["To discover cases the first example misses","To make code longer","To avoid understanding it"],c:0,why:"Different and boundary cases reveal hidden bugs."},
+{q:"What should you define before coding an algorithm?",a:["Inputs and expected output","The color of the editor","The longest variable name"],c:0,why:"A clear problem statement includes inputs and expected output."},
+{q:"What does rows[0][1] select in [[1, 2], [3, 4]]?",a:["1","2","3"],c:1,why:"Index 0 selects [1, 2], then index 1 selects 2."},
+{q:"What is a side effect?",a:["An observable change such as printing","A comment","A variable name"],c:0,why:"Printing and mutating shared data are observable effects."},
+{q:"A scan checks each of n items once. What is its typical time complexity?",a:["O(1)","O(n)","O(n²)"],c:1,why:"The number of checks grows linearly with the number of items."},
+{q:"When moving to another language, what transfers most directly?",a:["Concepts, not exact syntax","Every keyword","All libraries automatically"],c:0,why:"Programming concepts transfer, but syntax and libraries differ."}
 ];
 const challenges=[
 {title:"Challenge 01: Say hello",prompt:'Print the exact text Hello, world! (including punctuation).',code:'yeet("Hello, world!");',hint:'Use yeet("...") with the greeting inside quotes.',test:o=>o.trim()==="Hello, world!"},
