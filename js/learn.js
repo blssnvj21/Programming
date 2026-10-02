@@ -425,6 +425,60 @@ actual = "your program result";</pre><p>Fill in the four lines for a problem fro
 
 lessons.push(...expandedLessons);
 
+/* DEEP CURRICULUM: concrete lessons for every roadmap stage */
+const deepLessons=[];
+const deepStages=[
+["00","Computer Foundations","CPU, RAM, storage, files, paths, processes, permissions, terminal, binary, hex, Unicode"],
+["01","Computational Thinking","decomposition, abstraction, algorithms, pseudocode, flowcharts, inputs, outputs, invariants, edge cases"],
+["02","Language Mechanics","source code, tokens, lexing, parsing, ASTs, interpretation, compilation, bytecode, runtimes"],
+["03","Types and State","literals, variables, scope, lifetime, mutability, references, conversion, coercion, type systems"],
+["04","Expressions","precedence, associativity, short-circuiting, assignment, bitwise operations, overflow, floating point"],
+["05","Control Flow","branches, loops, break, continue, return, state machines, termination, loop invariants"],
+["06","Functions","parameters, returns, scope, recursion, call stacks, closures, lambdas, callbacks, contracts"],
+["07","Data Structures","arrays, lists, maps, sets, stacks, queues, linked lists, hash tables, trees, heaps, graphs"],
+["08","OOP","objects, classes, fields, methods, constructors, encapsulation, composition, inheritance, polymorphism"],
+["09","Paradigms","pure functions, immutability, side effects, map/filter/reduce, declarative, event-driven, logic"],
+["10","Algorithms","Big-O, searching, sorting, hashing, divide-and-conquer, greedy, dynamic programming, backtracking"],
+["11","Computing Mathematics","logic, sets, relations, proofs, induction, combinatorics, probability, statistics, vectors, matrices"],
+["12","Memory and Runtime","stack, heap, addresses, pointers, references, allocation, ownership, garbage collection, caches, UB"],
+["13","Testing and Quality","errors, exceptions, assertions, unit/integration/e2e tests, debugging, logging, fuzzing, review"],
+["14","Developer Workflow","Git, branches, merges, dependencies, package managers, debuggers, builds, CI, releases"],
+["15","Files and OS","I/O, paths, permissions, streams, buffers, JSON, CSV, processes, pipes, signals, system calls"],
+["16","Databases","relational modelling, keys, SQL, joins, aggregation, indexes, query plans, transactions, migrations"],
+["17","Networking","IP, ports, DNS, TCP, UDP, TLS, HTTP, APIs, caching, retries, WebSockets"],
+["18","Frontend","HTML, CSS, JavaScript, DOM, events, forms, accessibility, fetch, state, rendering, performance"],
+["19","Backend","routing, validation, services, authentication, authorization, sessions, APIs, caching, queues"],
+["20","Concurrency","processes, threads, tasks, event loops, async/await, races, locks, deadlocks, cancellation"],
+["21","Security","threat modelling, trust boundaries, validation, injection, XSS, CSRF, access control, secrets, privacy"],
+["22","Reliability","profiling, benchmarking, observability, metrics, traces, timeouts, retries, circuit breakers, backups"],
+["23","Language Design","lexing, parsing, ASTs, interpreters, type checking, inference, generics, reflection, macros"],
+["24","Distributed Systems","replication, partitioning, consistency, idempotency, queues, service discovery, failure"],
+["25","Specializations","systems, embedded, mobile, games, graphics, data, AI/ML, robotics, compilers, formal methods"],
+["26","Professional Practice","requirements, architecture, maintainability, documentation, teamwork, licensing, deployment, feedback"]
+];
+for(const [stage,title,topics] of deepStages){
+  topics.split(", ").forEach((topic,n)=>deepLessons.push([
+    stage+"."+String(n+1).padStart(2,"0")+" · "+topic,"20 min",title,
+    `<h1>Stage ${stage} · ${topic}</h1>
+    <p><strong>Mission:</strong> master <strong>${topic}</strong> as part of ${title}.</p>
+    <div class="concept-callout"><strong>🍌 Idiot translation:</strong> the computer is a very fast clerk with zero mind-reading privileges. Your job is to make the rules precise.</div>
+    <h2>Technical definition</h2><p>Write a one-sentence definition of ${topic}, then identify what information enters the mechanism, what transformation happens, and what result leaves it.</p>
+    <h2>Trace it</h2><ol><li>Choose the smallest example you can.</li><li>Predict the result before running it.</li><li>Trace each important state change.</li><li>Test one boundary or invalid case.</li></ol>
+    <h2>Build it</h2><pre>// Use pseudocode or the appropriate real language
+input = "small example";
+expected = "known result";
+actual = "your implementation";</pre>
+    <h2>Debug it</h2><p>Deliberately introduce one mistake relevant to this topic. Read the diagnostic, isolate the failure, fix one thing, and explain why the fix works.</p>
+    <div class="concept-callout"><strong>Transfer rule:</strong> BananaScript syntax is only used when the current interpreter supports the feature. Otherwise use pseudocode or the real target language. Never pretend unsupported syntax runs.</div>`
+  ]));
+  deepLessons.push([stage+".CAP · "+title+" project","45 min","Stage capstone",
+    `<h1>Stage ${stage} · ${title} Capstone</h1><p>Build a small complete project using the stage concepts and everything learned earlier.</p>
+    <h2>Requirements</h2><ol><li>Define the problem, users, inputs, outputs and constraints.</li><li>Break the solution into small components.</li><li>Implement the smallest working version.</li><li>Add at least three tests, including a boundary case.</li><li>Deliberately break one part and debug it.</li><li>Document one trade-off and one limitation.</li></ol>
+    <h2>Graduation test</h2><p>Explain the architecture, demonstrate the project, reproduce a bug, fix it, and explain the underlying concept without relying on memorized code.</p>`
+  ]);
+}
+lessons.push(...deepLessons);
+
 const lessonChecks=[
 {q:"What appears first?",a:["Second","First","Both on one line"],c:1,why:"Statements execute in source order."},
 {q:'What is the type of "42"?',a:["Number","String","Boolean"],c:1,why:"Quotation marks make it a string."},
