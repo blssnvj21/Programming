@@ -25,6 +25,7 @@ function parse(source){
   if(t.type==='number'||t.type==='string')n={kind:'literal',value:t.value};
   else if(t.type==='id'){
    if(t.value==='true'||t.value==='false')n={kind:'literal',value:t.value==='true'};
+   else if(t.value==='null')n={kind:'literal',value:null};
    else if(is('(')){take();const args=[];if(!is(')')){do{args.push(expression());if(!is(','))break;take();}while(true);}expect(')');n={kind:'call',name:t.value,args};}
    else n={kind:'variable',name:t.value};
   }else if(t.value==='['){const items=[];if(!is(']')){do{items.push(expression());if(!is(','))break;take();}while(true);}expect(']');n={kind:'array',items};}
