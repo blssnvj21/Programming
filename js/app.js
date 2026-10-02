@@ -3,91 +3,101 @@ const $ = (id) => document.getElementById(id);
 const example = $('editor').value;
 
 function tokenize(source) {
-  const tokens = []; let i = 0;
-  while (i < source.length) {
-    const c = source[i];
-    if (/\s/.test(c)) { i++; continue; }
-    if (c === '/' && source[i + 1] === '/') { while (i < source.length && source[i] !== '\n') i++; continue; }
-    if (c === '"' || c === "'") {
-      const quote = c; i++; let value = '';
-      while (i < source.length && source[i] !== quote) {
-        if (source[i] === '\\') { i++; if (i >= source.length) throw new Error("Unfinished escape sequence."); const escapes={n:'\n',t:'\t',r:'\r'}; value += escapes[source[i]] ?? source[i]; i++; }
-        else value += source[i++];
-      }
-      if (source[i] !== quote) throw new Error("Unterminated string. The quotation mark has left the building.");
-      i++; tokens.push({type:'string',value}); continue;
-    }
-    if (/[0-9]/.test(c)) { let raw=''; while(i<source.length && /[0-9.]/.test(source[i])) raw+=source[i++]; if(!/^\d+(\.\d+)?$/.test(raw)) throw new Error("Invalid number: "+raw); tokens.push({type:'number',value:Number(raw)}); continue; }
-    if (/[A-Za-z_]/.test(c)) { let word=''; while(i<source.length && /[A-Za-z0-9_]/.test(source[i])) word+=source[i++]; const aliases={stash:'let',hoard:'let',yell:'print',yeet:'print',again:'repeat',loop_de_loop:'repeat',when:'if',panic_if:'if',otherwise:'else',cope_else:'else'}; tokens.push({type:'id',value:aliases[word]||word}); continue; }
-    const two=source.slice(i,i+2); if(['==','!=','<=','>=','&&','||'].includes(two)){tokens.push({type:'op',value:two});i+=2;continue;}
+  const tokens=[]; let i=0;
+  while(i<source.length){
+    const c=source[i];
+    if(/\s/.test(c)){i++;continue;}
+    if(c==='/'&&source[i+1]==='/'){while(i<source.length&&source[i]!=='\n')i++;continue;}
+    if(c==='"'||c==="'"){const q=c;i++;let value='';while(i<source.length&&source[i]!==q){if(source[i]==='\\'){i++;if(i>=source.length)throw Error("Unfinished escape sequence.");const e={n:'\n',t:'\t',r:'\r'};value+=e[source[i]]??source[i];i++;}else value+=source[i++];}if(source[i]!==q)throw Error("Unterminated string. The quotation mark has left the building.");i++;tokens.push({type:'string',value});continue;}
+    if(/[0-9]/.test(c)){let raw='';while(i<source.length&&/[0-9.]/.test(source[i]))raw+=source[i++];if(!/^\d+(\.\d+)?$/.test(raw))throw Error("Invalid number: "+raw);tokens.push({type:'number',value:Number(raw)});continue;}
+    if(/[A-Za-z_]/.test(c)){let word='';while(i<source.length&&/[A-Za-z0-9_]/.test(source[i]))word+=source[i++];const aliases={stash:'let',hoard:'let',yell:'print',yeet:'print',again:'repeat',loop_de_loop:'repeat',when:'if',panic_if:'if',otherwise:'else',cope_else:'else',recipe:'func',send_back:'return'};tokens.push({type:'id',value:aliases[word]||word});continue;}
+    const two=source.slice(i,i+2);if(['==','!=','<=','>=','&&','||'].includes(two)){tokens.push({type:'op',value:two});i+=2;continue;}
     if('+-*/%(){}[]=<>;,!'.includes(c)){tokens.push({type:'op',value:c});i++;continue;}
-    throw new Error(`Unexpected character "${c}" at character ${i+1}. Please submit a fruit-based appeal.`);
-  }
-  tokens.push({type:'eof',value:''}); return tokens;
+    throw Error('Unexpected character "'+c+'" at character '+(i+1)+'.');
+  }tokens.push({type:'eof',value:''});return tokens;
 }
-function parse(source) {
-  const tokens=tokenize(source); let pos=0;
-  const peek=()=>tokens[pos], take=()=>tokens[pos++], is=v=>peek().value===v;
-  const expect=v=>{if(!is(v))throw new Error(`Expected "${v}", received "${peek().value||'end of file'}".`);return take();};
-  const identifier=()=>{if(peek().type!=='id')throw new Error("Expected a variable name. The naming committee is concerned.");return take().value;};
-  function primary(){
-    const t=take();
-    if(t.type==='number'||t.type==='string')return{kind:'literal',value:t.value};
-    if(t.type==='id'){
-      if(t.value==='true')return{kind:'literal',value:true};
-      if(t.value==='false')return{kind:'literal',value:false};
-      if(is('(')){take();const args=[];if(!is(')')){do{args.push(expression());if(!is(','))break;take();}while(true);}expect(')');return{kind:'call',name:t.value,args};}
-      return{kind:'variable',name:t.value};
-    }
-    if(t.value==='['){const items=[];if(!is(']')){do{items.push(expression());if(!is(','))break;take();}while(true);}expect(']');return{kind:'array',items};}
-    if(t.value==='('){const e=expression();expect(')');return e;}
-    throw new Error(`Expected a value, received "${t.value||'end of file'}".`);
-  }
-  function unary(){if(is('-')||is('!')){const op=take().value;return{kind:'unary',op,right:unary()};}return primary();}
-  function factor(){let n=unary();while(is('*')||is('/')||is('%')){const op=take().value;n={kind:'binary',op,left:n,right:unary()};}return n;}
-  function term(){let n=factor();while(is('+')||is('-')){const op=take().value;n={kind:'binary',op,left:n,right:factor()};}return n;}
-  function comparison(){let n=term();while(['==','!=','<','>','<=','>='].includes(peek().value)){const op=take().value;n={kind:'binary',op,left:n,right:term()};}return n;}
-  function logicalAnd(){let n=comparison();while(is('&&')){const op=take().value;n={kind:'binary',op,left:n,right:comparison()};}return n;}
-  function logicalOr(){let n=logicalAnd();while(is('||')){const op=take().value;n={kind:'binary',op,left:n,right:logicalAnd()};}return n;}
-  const expression=()=>logicalOr();
-  function block(){expect('{');const body=[];while(!is('}')&&peek().type!=='eof')body.push(statement());expect('}');return body;}
-  function statement(){
-    if(is('let')){take();const name=identifier();expect('=');const value=expression();if(is(';'))take();return{kind:'let',name,value};}
-    if(is('print')){take();expect('(');const value=expression();expect(')');if(is(';'))take();return{kind:'print',value};}
-    if(is('repeat')){take();const count=expression();return{kind:'repeat',count,body:block()};}
-    if(is('while')){take();expect('(');const test=expression();expect(')');return{kind:'while',test,body:block()};}
-    if(is('if')){take();expect('(');const test=expression();expect(')');const yes=block();let no=[];if(is('else')){take();no=block();}return{kind:'if',test,yes,no};}
-    if(peek().type==='id'){const name=take().value;expect('=');const value=expression();if(is(';'))take();return{kind:'assign',name,value};}
-    throw new Error(`Unknown instruction "${peek().value||'end of file'}". Try let, print, repeat, or if.`);
-  }
-  const body=[];while(peek().type!=='eof')body.push(statement());return body;
+function parse(source){
+ const tokens=tokenize(source);let pos=0;const peek=()=>tokens[pos],take=()=>tokens[pos++],is=v=>peek().value===v;
+ const expect=v=>{if(!is(v))throw Error('Expected "'+v+'", received "'+(peek().value||'end of file')+'".');return take();};
+ const identifier=()=>{if(peek().type!=='id')throw Error('Expected a name.');return take().value;};
+ function primary(){
+  let n;const t=take();
+  if(t.type==='number'||t.type==='string')n={kind:'literal',value:t.value};
+  else if(t.type==='id'){
+   if(t.value==='true'||t.value==='false')n={kind:'literal',value:t.value==='true'};
+   else if(is('(')){take();const args=[];if(!is(')')){do{args.push(expression());if(!is(','))break;take();}while(true);}expect(')');n={kind:'call',name:t.value,args};}
+   else n={kind:'variable',name:t.value};
+  }else if(t.value==='['){const items=[];if(!is(']')){do{items.push(expression());if(!is(','))break;take();}while(true);}expect(']');n={kind:'array',items};}
+  else if(t.value==='('){n=expression();expect(')');}
+  else throw Error('Expected a value, received "'+(t.value||'end of file')+'".');
+  while(is('[')){take();const index=expression();expect(']');n={kind:'index',object:n,index};}
+  return n;
+ }
+ function unary(){if(is('-')||is('!')){const op=take().value;return{kind:'unary',op,right:unary()};}return primary();}
+ function factor(){let n=unary();while(is('*')||is('/')||is('%')){const op=take().value;n={kind:'binary',op,left:n,right:unary()};}return n;}
+ function term(){let n=factor();while(is('+')||is('-')){const op=take().value;n={kind:'binary',op,left:n,right:factor()};}return n;}
+ function comparison(){let n=term();while(['==','!=','<','>','<=','>='].includes(peek().value)){const op=take().value;n={kind:'binary',op,left:n,right:term()};}return n;}
+ function logicalAnd(){let n=comparison();while(is('&&')){const op=take().value;n={kind:'binary',op,left:n,right:comparison()};}return n;}
+ function logicalOr(){let n=logicalAnd();while(is('||')){const op=take().value;n={kind:'binary',op,left:n,right:logicalAnd()};}return n;}
+ const expression=()=>logicalOr();
+ function block(){expect('{');const body=[];while(!is('}')&&peek().type!=='eof')body.push(statement());expect('}');return body;}
+ function statement(){
+  if(is('func')){take();const name=identifier();expect('(');const params=[];if(!is(')')){do{params.push(identifier());if(!is(','))break;take();}while(true);}expect(')');if(new Set(params).size!==params.length)throw Error('A function cannot repeat a parameter name.');return{kind:'func',name,params,body:block()};}
+  if(is('return')){take();const value=is(';')||is('}')?{kind:'literal',value:null}:expression();if(is(';'))take();return{kind:'return',value};}
+  if(is('let')){take();const name=identifier();expect('=');const value=expression();if(is(';'))take();return{kind:'let',name,value};}
+  if(is('print')){take();expect('(');const value=expression();expect(')');if(is(';'))take();return{kind:'print',value};}
+  if(is('repeat')){take();const count=expression();return{kind:'repeat',count,body:block()};}
+  if(is('while')){take();expect('(');const test=expression();expect(')');return{kind:'while',test,body:block()};}
+  if(is('if')){take();expect('(');const test=expression();expect(')');const yes=block();let no=[];if(is('else')){take();no=block();}return{kind:'if',test,yes,no};}
+  if(peek().type==='id'){const name=take().value;if(is('[')){take();const index=expression();expect(']');expect('=');const value=expression();if(is(';'))take();return{kind:'indexAssign',name,index,value};}expect('=');const value=expression();if(is(';'))take();return{kind:'assign',name,value};}
+  throw Error('Unknown instruction "'+(peek().value||'end of file')+'".');
+ }
+ const body=[];while(peek().type!=='eof')body.push(statement());return body;
 }
-function execute(ast) {
-  const env=Object.create(null), output=[];let steps=0;const maxSteps=10000;
-  function numeric(a,b,fn){if(typeof a!=='number'||typeof b!=='number')throw new Error("This operation requires numbers. Please separate your fruit from your figures.");return fn(a,b);}
-  function evaluate(n){
-    if(n.kind==='literal')return n.value;
-    if(n.kind==='array')return n.items.map(evaluate);
-    if(n.kind==='call'){const args=n.args.map(evaluate);switch(n.name){case 'len':if(args.length!==1||!(typeof args[0]==='string'||Array.isArray(args[0])))throw new Error('len expects one string or array.');return args[0].length;case 'push':if(args.length!==2||!Array.isArray(args[0]))throw new Error('push expects an array and a value.');args[0].push(args[1]);return args[0].length;case 'pop':if(args.length!==1||!Array.isArray(args[0]))throw new Error('pop expects one array.');return args[0].pop();case 'str':if(args.length!==1)throw new Error('str expects one argument.');return String(args[0]);case 'num':if(args.length!==1||typeof args[0]==='boolean'||args[0]===''||!Number.isFinite(Number(args[0])))throw new Error('num expects a numeric value.');return Number(args[0]);default:throw new Error('Unknown built-in function: '+n.name+'.');}}
-    if(n.kind==='variable'){if(!Object.prototype.hasOwnProperty.call(env,n.name))throw new Error(`"${n.name}" has not been registered. Please contact Variable Records.`);return env[n.name];}
-    if(n.kind==='unary'){const v=evaluate(n.right);if(n.op==='!')return !Boolean(v);if(typeof v!=='number')throw new Error("Unary minus requires a number. Fruit cannot be negatively ripe.");return -v;}
-    const a=evaluate(n.left);
-    if(n.op==='&&')return Boolean(a)&&Boolean(evaluate(n.right));
-    if(n.op==='||')return Boolean(a)||Boolean(evaluate(n.right));
-    const b=evaluate(n.right);
-    switch(n.op){case '+':return typeof a==='string'||typeof b==='string'?String(a)+String(b):numeric(a,b,(x,y)=>x+y);case '-':return numeric(a,b,(x,y)=>x-y);case '*':return numeric(a,b,(x,y)=>x*y);case '%':if(b===0)throw new Error('Remainder by zero is undefined.');return numeric(a,b,(x,y)=>x%y);case '&&':return Boolean(a)&&Boolean(b);case '||':return Boolean(a)||Boolean(b);case '/':if(b===0)throw new Error("Division by zero. The Banana Council has suspended mathematics.");return numeric(a,b,(x,y)=>x/y);case '==':return a===b;case '!=':return a!==b;case '<':return a<b;case '>':return a>b;case '<=':return a<=b;case '>=':return a>=b;default:throw new Error("Unapproved operator: "+n.op);}
+function execute(ast){
+ const globals=Object.create(null),functions=Object.create(null),output=[];let steps=0,callDepth=0;const maxSteps=10000;
+ const scopes=[globals];
+ const lookup=name=>{for(let i=scopes.length-1;i>=0;i--)if(Object.prototype.hasOwnProperty.call(scopes[i],name))return scopes[i][name];throw Error('"'+name+'" is not defined.');};
+ const assign=(name,value)=>{for(let i=scopes.length-1;i>=0;i--)if(Object.prototype.hasOwnProperty.call(scopes[i],name)){scopes[i][name]=value;return;}throw Error('Cannot update "'+name+'" before declaration.');};
+ function evaluate(n){
+  if(n.kind==='literal')return n.value;
+  if(n.kind==='array')return n.items.map(evaluate);
+  if(n.kind==='variable')return lookup(n.name);
+  if(n.kind==='index'){const obj=evaluate(n.object),idx=evaluate(n.index);if(!Array.isArray(obj)&&typeof obj!=='string')throw Error('Indexing requires an array or string.');if(!Number.isInteger(idx)||idx<0||idx>=obj.length)throw Error('Index is out of range.');return obj[idx];}
+  if(n.kind==='call'){
+   const args=n.args.map(evaluate);
+   switch(n.name){
+    case 'len':if(args.length!==1||!(typeof args[0]==='string'||Array.isArray(args[0])))throw Error('len expects one string or array.');return args[0].length;
+    case 'push':if(args.length!==2||!Array.isArray(args[0]))throw Error('push expects an array and a value.');args[0].push(args[1]);return args[0].length;
+    case 'pop':if(args.length!==1||!Array.isArray(args[0]))throw Error('pop expects one array.');return args[0].pop();
+    case 'str':if(args.length!==1)throw Error('str expects one argument.');return String(args[0]);
+    case 'num':if(args.length!==1||typeof args[0]==='boolean'||args[0]===''||!Number.isFinite(Number(args[0])))throw Error('num expects a numeric value.');return Number(args[0]);
+   }
+   const fn=functions[n.name];if(!fn)throw Error('Unknown function: '+n.name+'.');
+   if(args.length!==fn.params.length)throw Error(n.name+' expects '+fn.params.length+' argument(s), received '+args.length+'.');
+   if(++callDepth>100) {callDepth--;throw Error('Function call depth limit reached (100).');}
+   const local=Object.create(null);fn.params.forEach((p,i)=>local[p]=args[i]);scopes.push(local);
+   try{run(fn.body);return null;}catch(e){if(e&&e.isBananaReturn)return e.value;throw e;}finally{scopes.pop();callDepth--;}
   }
-  function run(list){for(const s of list){if(++steps>maxSteps)throw new Error("Execution limit reached (10,000 steps). The program has become a fruit-based bureaucracy.");
-    if(s.kind==='let'){if(Object.prototype.hasOwnProperty.call(env,s.name))throw new Error(`"${s.name}" is already registered. Use assignment to amend it.`);env[s.name]=evaluate(s.value);}
-    else if(s.kind==='assign'){if(!Object.prototype.hasOwnProperty.call(env,s.name))throw new Error(`Cannot update "${s.name}" before registration.`);env[s.name]=evaluate(s.value);}
-    else if(s.kind==='print'){if(output.length>=500)throw new Error("Output limit reached. The terminal needs a fruit break.");output.push(String(evaluate(s.value)));}
-    else if(s.kind==='if')run(evaluate(s.test)?s.yes:s.no);
-    else if(s.kind==='repeat'){const count=evaluate(s.count);if(!Number.isInteger(count)||count<0||count>1000)throw new Error("repeat requires a whole number from 0 to 1000.");for(let i=0;i<count;i++)run(s.body);}
-    else if(s.kind==='while'){let turns=0;while(evaluate(s.test)){if(++turns>1000)throw new Error('while loop limit reached (1,000 iterations). Update the condition or the loop will apply for a desk job.');run(s.body);}}
-  }}
-  run(ast);return output;
+  if(n.kind==='unary'){const v=evaluate(n.right);if(n.op==='!')return !Boolean(v);if(typeof v!=='number')throw Error('Unary minus requires a number.');return -v;}
+  const a=evaluate(n.left);if(n.op==='&&')return Boolean(a)&&Boolean(evaluate(n.right));if(n.op==='||')return Boolean(a)||Boolean(evaluate(n.right));const b=evaluate(n.right);
+  const numeric=(x,y,fn)=>{if(typeof x!=='number'||typeof y!=='number')throw Error('This operation requires numbers.');return fn(x,y);};
+  switch(n.op){case '+':return typeof a==='string'||typeof b==='string'?String(a)+String(b):numeric(a,b,(x,y)=>x+y);case '-':return numeric(a,b,(x,y)=>x-y);case '*':return numeric(a,b,(x,y)=>x*y);case '/':if(b===0)throw Error('Division by zero.');return numeric(a,b,(x,y)=>x/y);case '%':if(b===0)throw Error('Remainder by zero.');return numeric(a,b,(x,y)=>x%y);case '==':return a===b;case '!=':return a!==b;case '<':return a<b;case '>':return a>b;case '<=':return a<=b;case '>=':return a>=b;default:throw Error('Unknown operator '+n.op);}
+ }
+ function run(list){for(const s of list){if(++steps>maxSteps)throw Error('Execution limit reached (10,000 statements).');
+  if(s.kind==='func'){if(Object.prototype.hasOwnProperty.call(functions,s.name))throw Error('Function "'+s.name+'" is already declared.');functions[s.name]=s;}
+  else if(s.kind==='return')throw {isBananaReturn:true,value:evaluate(s.value)};
+  else if(s.kind==='let'){if(Object.prototype.hasOwnProperty.call(scopes[scopes.length-1],s.name))throw Error('"'+s.name+'" is already declared in this scope.');scopes[scopes.length-1][s.name]=evaluate(s.value);}
+  else if(s.kind==='assign')assign(s.name,evaluate(s.value));
+  else if(s.kind==='indexAssign'){const arr=lookup(s.name),idx=evaluate(s.index),v=evaluate(s.value);if(!Array.isArray(arr))throw Error('Indexed assignment requires an array variable.');if(!Number.isInteger(idx)||idx<0||idx>=arr.length)throw Error('Index is out of range.');arr[idx]=v;}
+  else if(s.kind==='print'){if(output.length>=500)throw Error('Output limit reached (500 lines).');output.push(String(evaluate(s.value)));}
+  else if(s.kind==='if')run(evaluate(s.test)?s.yes:s.no);
+  else if(s.kind==='repeat'){const count=evaluate(s.count);if(!Number.isInteger(count)||count<0||count>1000)throw Error('repeat requires an integer from 0 to 1000.');for(let i=0;i<count;i++)run(s.body);}
+  else if(s.kind==='while'){let turns=0;while(evaluate(s.test)){if(++turns>1000)throw Error('while loop limit reached (1,000 iterations).');run(s.body);}}
+ }}
+ run(ast);return output;
 }
-window.BananaCompiler = function(source){ return execute(parse(source)); };
+window.BananaCompiler=function(source){return execute(parse(source));};
 $('runButton').addEventListener('click',()=>{
   const out=$('output'),start=performance.now();out.classList.remove('error');$('compilerState').textContent='COMPILING…';$('status').textContent='Consulting the fruit council';
   try{const lines=execute(parse($('editor').value));out.textContent=lines.length?lines.join('\n'):'(Program completed without producing output. Suspiciously efficient.)';$('compilerState').textContent='COMPILED ✓';$('status').textContent='No bananas were harmed';}
