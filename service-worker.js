@@ -34,8 +34,13 @@ self.addEventListener("fetch",event=>{
         }
         return response;
       })
-      .catch(()=>caches.match(request).then(hit=>hit||(
-        request.mode==="navigate" ? caches.match("./index.html") : undefined
-      )))
+      .catch(()=>caches.match(request).then(hit=>{
+        if(hit)return hit;
+        const fallback=new URL(request.url);
+        fallback.search="";
+        return caches.match(fallback.toString()).then(baseHit=>baseHit||(
+          request.mode==="navigate" ? caches.match("./index.html") : undefined
+        ));
+      }))
   );
 });
