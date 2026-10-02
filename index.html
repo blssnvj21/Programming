@@ -7,124 +7,27 @@
   <meta name="description" content="BananaScript: a deeply unserious programming language with a surprisingly real browser compiler.">
   <title>BananaScript — Code. Confuse. Commit.</title>
   <link rel="stylesheet" href="css/style.css">
-  <script src="js/banana.js?v=4" defer></script><script src="js/app.js?v=3" defer></script><script src="js/pwa.js" defer></script>
+  <script src="js/banana.js?v=5" defer></script><script src="js/app.js?v=3" defer></script><script src="js/pwa.js" defer></script>
 </head>
 <body>
-<header class="topbar">
-  <div class="wrap nav">
-    <a class="brand" href="#home"><span class="banana">🍌</span> BananaScript<sup>™</sup></a>
-    <span class="tagline">Code. Confuse. Commit.</span>
-    <nav class="navlinks" aria-label="Main navigation">
-      <a href="index.html">Home</a><a href="#language">Language</a><a href="#playground">Playground</a><a href="learn.html">Full course</a><a href="#updates">Updates</a>
-    </nav>
-    <div class="nav-actions"><button class="navbutton" id="installButton" hidden>⬇ Install app</button><button class="navbutton" id="bananaButton">🍌 Download (a banana)</button></div>
-  </div>
-</header>
+<header class="topbar"><div class="wrap nav"><a class="brand" href="#home"><span class="banana">🍌</span> BananaScript<sup>™</sup></a><span class="tagline">Code. Confuse. Commit.</span><nav class="navlinks" aria-label="Main navigation"><a href="index.html">Home</a><a href="#language">Language</a><a href="#playground">Playground</a><a href="learn.html">Full course</a><a href="#updates">Updates</a></nav><div class="nav-actions"><button class="navbutton" id="installButton" hidden>⬇ Install app</button><button class="navbutton" id="bananaButton">🍌 Download (a banana)</button></div></div></header>
 <main id="home">
-  <section class="wrap hero">
-    <div>
-      <div class="eyebrow">⚠ THE FUTURE IS FRUIT-SHAPED</div>
-      <h1>The world's most <span>serious</span> programming language.</h1>
-      <p>BananaScript is a powerful, flexible, and emotionally ripe language for building anything from tiny scripts to systems that should probably have been an email.</p>
-      <div class="actions"><a class="btn primary" href="#playground">🍌 Start compiling</a><a class="btn" href="learn.html">▤ Start the full course</a></div>
-      <div class="micro">BananaScript v0.11 · parsed + executed locally · compiler/runtime upgraded by a monkey</div>
-    </div>
-    <div class="hero-art" aria-label="A banana in a cosmic programming universe">
-      <div class="planet"></div><div class="bigbanana" aria-hidden="true">🍌</div>
-      <div class="floatnote note1">Real programmers<br>use bananas.</div>
-      <div class="floatnote note2">100% potassium.<br>0% guarantees.</div>
-    </div>
-  </section>
-  <div class="ticker" aria-hidden="true"><span>🍌 BREAKING: BANANAS DECLARED TURING-COMPLETE BY A PANEL OF THREE MONKEYS · NEW PATCH: FIXED A BUG, INTRODUCED A FRUIT · PLEASE DO NOT RUN THE COMPILER IN A MICROWAVE · THE BANANA COUNCIL IS WATCHING · </span></div>
-  <section class="wrap layout">
-    <section class="panel" id="language">
-      <div class="panelhead"><h2>🍌 Language Features</h2><span class="pill">OFFICIALLY UNNECESSARY</span></div>
-      <div class="panelbody">
-        <div class="featuregrid">
-          <article class="feature"><div class="emoji">🍌</div><h3>Banana Variables</h3><p>Store data in fruit. Boring variables are deprecated emotionally.</p></article>
-          <article class="feature"><div class="emoji">🌀</div><h3>Quantum Loops</h3><p>Repeat an operation until reality notices.</p></article>
-          <article class="feature"><div class="emoji">💗</div><h3>Emotional Functions</h3><p>Functions that return a value and unresolved feelings.</p></article>
-          <article class="feature"><div class="emoji">📋</div><h3>Bureaucracy Mode</h3><p>Every operation requires three forms and a witness.</p></article>
-          <article class="feature"><div class="emoji">⚠️</div><h3>Random Errors</h3><p>Errors are part of the developer experience.</p></article>
-          <article class="feature"><div class="emoji">💬</div><h3>Mandatory Comments</h3><p>Your code must contain one inspirational quote.</p></article>
-        </div>
-        <div class="bananaquote"><strong>🍌 Today's Motivational Banana</strong><p id="quote">“You can do it. But only after five cups of coffee.”</p><button class="btn quote-btn" id="quoteButton">Get another banana</button></div>
-      </div>
-    </section>
-    <section class="panel" id="playground">
-      <div class="panelhead"><h2>⌨ Try the Compiler</h2><span class="pill" id="compilerState">READY-ish</span></div>
-      <div class="panelbody">
-        <p class="intro">Write BananaScript, then press Run. The browser engine now runs the same BananaScript compiler front end used by the Academy: lex, parse, validate, then execute locally. No server. No database. No fruit license.</p>
-        <div class="codebox">
-          <div class="editorbar"><span><i class="dot red"></i><i class="dot yellow"></i><i class="dot green"></i> &nbsp;untitled.banana</span><span>UTF-8 · BananaScript</span></div>
-          <label class="sr" for="editor">BananaScript code editor</label>
-          <textarea class="editor" id="editor" spellcheck="false" autocapitalize="off" autocomplete="off">hoard banana = "yellow";
-hoard count = 3;
+<section class="wrap hero"><div><div class="eyebrow">⚠ THE FUTURE IS FRUIT-SHAPED</div><h1>The world's most <span>serious</span> programming language.</h1><p>BananaScript is a powerful, flexible, and emotionally ripe language for building anything from tiny scripts to systems that should probably have been an email.</p><div class="actions"><a class="btn primary" href="#playground">🍌 Start compiling</a><a class="btn" href="learn.html">▤ Start the full course</a></div><div class="micro">BananaScript v0.12 · parsed + executed locally · compiler/runtime upgraded by a monkey</div></div><div class="hero-art" aria-label="A banana in a cosmic programming universe"><div class="planet"></div><div class="bigbanana" aria-hidden="true">🍌</div><div class="floatnote note1">Real programmers<br>use bananas.</div><div class="floatnote note2">100% potassium.<br>0% guarantees.</div></div></section>
+<div class="ticker" aria-hidden="true"><span>🍌 BREAKING: BANANAS DECLARED Turing-COMPLETE BY A PANEL OF THREE MONKEYS · NEW PATCH: EACH LOOPS HAVE ARRIVED · PLEASE DO NOT RUN THE COMPILER IN A MICROWAVE · THE BANANA COUNCIL IS WATCHING · </span></div>
+<section class="wrap layout"><section class="panel" id="language"><div class="panelhead"><h2>🍌 Language Features</h2><span class="pill">OFFICIALLY UNNECESSARY</span></div><div class="panelbody"><div class="featuregrid"><article class="feature"><div class="emoji">🍌</div><h3>Banana Variables</h3><p>Store data in fruit. Boring variables are deprecated emotionally.</p></article><article class="feature"><div class="emoji">🌀</div><h3>Quantum Loops</h3><p>Repeat an operation until reality notices.</p></article><article class="feature"><div class="emoji">💗</div><h3>Emotional Functions</h3><p>Functions that return a value and unresolved feelings.</p></article><article class="feature"><div class="emoji">📋</div><h3>Bureaucracy Mode</h3><p>Every operation requires three forms and a witness.</p></article><article class="feature"><div class="emoji">⚠️</div><h3>Random Errors</h3><p>Errors are part of the developer experience.</p></article><article class="feature"><div class="emoji">💬</div><h3>Mandatory Comments</h3><p>Your code must contain one inspirational quote.</p></article></div><div class="bananaquote"><strong>🍌 Today's Motivational Banana</strong><p id="quote">“You can do it. But only after five cups of coffee.”</p><button class="btn quote-btn" id="quoteButton">Get another banana</button></div></div></section>
+<section class="panel" id="playground"><div class="panelhead"><h2>⌨ Try the Compiler</h2><span class="pill" id="compilerState">READY-ish</span></div><div class="panelbody"><p class="intro">Write BananaScript, then press Run. The browser engine runs the same BananaScript runtime used by the Academy. No server. No database. No fruit license.</p><div class="codebox"><div class="editorbar"><span><i class="dot red"></i><i class="dot yellow"></i><i class="dot green"></i> &nbsp;untitled.banana</span><span>UTF-8 · BananaScript v0.12</span></div><label class="sr" for="editor">BananaScript code editor</label><textarea class="editor" id="editor" spellcheck="false" autocapitalize="off" autocomplete="off">hoard fruits = ["banana", "mango", "pear"];
 
-yeet("Banana status: " + banana);
-loop_de_loop count {
-  yeet("Banana #" + count);
-  count = count - 1;
+each fruit in fruits {
+  yeet("Fruit: " + fruit);
 }
 
-panic_if (banana == "yellow") {
-  yeet("Potassium protocol: APPROVED");
-} cope_else {
-  yeet("Please contact Fruit Support.");
-}</textarea>
-          <div class="toolbar"><button class="btn primary" id="runButton">▶ Run code</button><button class="btn" id="exampleButton">↻ Load example</button><button class="btn" id="clearButton">⌫ Clear</button><button class="btn" id="saveCodeButton">↓ Save .banana</button><span class="status" id="status">Awaiting fruit instructions</span></div>
-        </div>
-        <h3 class="subheading">Output terminal</h3>
-        <div class="codebox"><div class="editorbar"><span>stdout.log</span><span><span id="runtime">No execution yet</span> · <button class="text-button" id="copyOutputButton" type="button">Copy output</button></span></div><pre class="output" id="output" aria-live="polite"></pre></div>
-        <p class="micro footnote">Banana dialect: hoard, yeet(), loop_de_loop, panic_if, cope_else, recipe, send_back, break, continue. Classic forms (let, print, repeat, if, else) also work. Includes functions, arrays, indexing, assignment, strings, numbers, arithmetic, comparisons, loop controls, and an expanded standard library: len, push, pop, min, max, contains, join, split, range, sum, reverse, upper, lower, trim, replace, and assert. Maximum 1,000 loop iterations. The compiler does not execute JavaScript.</p>
-      </div>
-    </section>
-    <aside class="sidecol">
-      <section class="panel">
-        <div class="panelhead"><h3>🏆 Top Banana Coders</h3><span class="pill">FAKE LIVE</span></div>
-        <div class="panelbody">
-          <div class="rankrow"><span>🥇 &nbsp;gorillaCoder42</span><span>42,069</span></div>
-          <div class="rankrow"><span>🥈 &nbsp;bananaQueen</span><span>33,333</span></div>
-          <div class="rankrow"><span>🥉 &nbsp;toastWithBanana</span><span>21,666</span></div>
-          <div class="rankrow"><span>4 &nbsp; quantumMonkey</span><span>13,371</span></div>
-          <div class="rankrow"><span>5 &nbsp; pineappleDev</span><span>9,999</span></div>
-          <button class="btn full" id="hallButton">Join the Hall of Fame</button>
-        </div>
-      </section>
-      <section class="panel" id="updates">
-        <div class="panelhead"><h3>📢 Live Updates</h3><span class="pill">TOTALLY LIVE</span></div>
-        <div class="panelbody">
-          <article class="notice"><small>PATCH 0.8</small><p>BananaScript released. Stability remains a philosophical question.</p></article>
-          <article class="notice"><small>ACADEMIC NOTICE</small><p>Advanced Banana Metaprogramming now counts as a fruit-adjacent discipline.</p></article>
-          <article class="notice"><small>COMMUNITY</small><p>12,345,678 bananas have allegedly been consumed by our community.</p></article>
-          <article class="notice"><small>URGENT</small><p>The Banana Council is accepting emotional support forms.</p></article>
-        </div>
-      </section>
-    </aside>
-  </section>
-  <section class="wrap bottomgrid" id="learn">
-    <section class="panel">
-      <div class="panelhead"><h2>📚 Learn BananaScript</h2><span class="pill">CURRICULUM APPROVED</span></div>
-      <div class="panelbody">
-        <p class="intro">From banana basics to quantum loops, our course will teach you everything you need to know (and possibly a few things you don't).</p>
-        <div class="lessonrow"><span class="lessonnum">00</span><div><strong>The Banana Basics</strong><small>Printing, comments, and fruit etiquette</small></div><span class="pill">12 min</span></div>
-        <div class="lessonrow"><span class="lessonnum">01</span><div><strong>Variables &amp; Types</strong><small>Strings, numbers, suspicious produce</small></div><span class="pill">20 min</span></div>
-        <div class="lessonrow"><span class="lessonnum">02</span><div><strong>Conditions</strong><small>Making decisions under potassium</small></div><span class="pill">18 min</span></div>
-        <div class="lessonrow"><span class="lessonnum">03</span><div><strong>Loops &amp; Chaos</strong><small>Repeat until the fruit council objects</small></div><span class="pill">25 min</span></div>
-        <div class="lessonrow"><span class="lessonnum">04</span><div><strong>Functions &amp; Feelings</strong><small>Return values. Process emotions later.</small></div><span class="pill">30 min</span></div>
-      </div>
-    </section>
-    <section class="panel">
-      <div class="panelhead"><h2>🧪 BananaScript in the Wild</h2><span class="pill">CASE STUDIES</span></div>
-      <div class="panelbody">
-        <div class="docs"><article class="doc"><span>🐒</span><strong>BananaToDo</strong><p>A productivity app for monkeys with 800 open tasks.</p></article><article class="doc"><span>🛰️</span><strong>CatGPT</strong><p>An AI that speaks only in meows and fruit metaphors.</p></article><article class="doc"><span>🌦️</span><strong>GalacticWeather</strong><p>Forecasts weather on planets made of pudding.</p></article></div>
-        <button class="btn projects-btn" id="projectsButton">Explore fictional projects →</button>
-        <article class="notice"><small>COMPILER PHILOSOPHY</small><p>“A bug is just a feature that has not completed its paperwork.” — Senior Banana Engineer</p></article>
-      </div>
-    </section>
-  </section>
+recipe double(n) {
+  send_back n * 2;
+}
+
+yeet("Twice: " + double(21));</textarea><div class="toolbar"><button class="btn primary" id="runButton">▶ Run code</button><button class="btn" id="exampleButton">↻ Load example</button><button class="btn" id="clearButton">⌫ Clear</button><button class="btn" id="saveCodeButton">↓ Save .banana</button><span class="status" id="status">Awaiting fruit instructions</span></div></div><h3 class="subheading">Output terminal</h3><div class="codebox"><div class="editorbar"><span>stdout.log</span><span><span id="runtime">No execution yet</span> · <button class="text-button" id="copyOutputButton" type="button">Copy output</button></span></div><pre class="output" id="output" aria-live="polite"></pre></div><p class="micro footnote">BananaScript v0.12 supports hoard/stash, yeet/yell, loop_de_loop/again, each, while, panic_if/when, cope_else/otherwise, else-if, recipe, send_back, break, continue, arrays, indexing, assignment, strings, numbers, arithmetic, comparisons, logical operators, and standard helpers including len, push, pop, min, max, contains, join, split, range, sum, reverse, upper, lower, trim, replace, and assert.</p></div></section>
+<aside class="sidecol"><section class="panel"><div class="panelhead"><h3>🏆 Top Banana Coders</h3><span class="pill">FAKE LIVE</span></div><div class="panelbody"><div class="rankrow"><span>🥇 &nbsp;gorillaCoder42</span><span>42,069</span></div><div class="rankrow"><span>🥈 &nbsp;bananaQueen</span><span>33,333</span></div><div class="rankrow"><span>🥉 &nbsp;toastWithBanana</span><span>21,666</span></div><div class="rankrow"><span>4 &nbsp; quantumMonkey</span><span>13,371</span></div><div class="rankrow"><span>5 &nbsp; pineappleDev</span><span>9,999</span></div><button class="btn full" id="hallButton">Join the Hall of Fame</button></div></section><section class="panel" id="updates"><div class="panelhead"><h3>📢 Live Updates</h3><span class="pill">TOTALLY LIVE</span></div><div class="panelbody"><article class="notice"><small>PATCH 0.12</small><p>Each-loops have arrived. The bananas may now march through arrays and strings in an orderly queue.</p></article><article class="notice"><small>ACADEMIC NOTICE</small><p>Advanced Banana Metaprogramming now counts as a fruit-adjacent discipline.</p></article><article class="notice"><small>COMMUNITY</small><p>12,345,678 bananas have allegedly been consumed by our community.</p></article><article class="notice"><small>URGENT</small><p>The Banana Council is accepting emotional support forms.</p></article></div></section></aside></section>
+<section class="wrap bottomgrid" id="learn"><section class="panel"><div class="panelhead"><h2>📚 Learn BananaScript</h2><span class="pill">CURRICULUM APPROVED</span></div><div class="panelbody"><p class="intro">From banana basics to quantum loops, our course teaches programming fundamentals through a small language you can actually run.</p><div class="lessonrow"><span class="lessonnum">00</span><div><strong>The Banana Basics</strong><small>Printing, comments, and fruit etiquette</small></div><span class="pill">12 min</span></div><div class="lessonrow"><span class="lessonnum">01</span><div><strong>Variables &amp; Types</strong><small>Strings, numbers, suspicious produce</small></div><span class="pill">20 min</span></div><div class="lessonrow"><span class="lessonnum">02</span><div><strong>Conditions</strong><small>Making decisions under potassium</small></div><span class="pill">18 min</span></div><div class="lessonrow"><span class="lessonnum">03</span><div><strong>Loops &amp; Chaos</strong><small>Repeat until the fruit council objects</small></div><span class="pill">25 min</span></div><div class="lessonrow"><span class="lessonnum">04</span><div><strong>Functions &amp; Feelings</strong><small>Return values. Process emotions later.</small></div><span class="pill">30 min</span></div></div></section><section class="panel"><div class="panelhead"><h2>🧪 BananaScript in the Wild</h2><span class="pill">CASE STUDIES</span></div><div class="panelbody"><div class="docs"><article class="doc"><span>🐒</span><strong>BananaToDo</strong><p>A productivity app for monkeys with 800 open tasks.</p></article><article class="doc"><span>🛰️</span><strong>CatGPT</strong><p>An AI that speaks only in meows and fruit metaphors.</p></article><article class="doc"><span>🌦️</span><strong>GalacticWeather</strong><p>Forecasts weather on planets made of pudding.</p></article></div><button class="btn projects-btn" id="projectsButton">Explore fictional projects →</button><article class="notice"><small>COMPILER PHILOSOPHY</small><p>“A bug is just a feature that has not completed its paperwork.” — Senior Banana Engineer</p></article></div></section></section>
 </main>
-<footer class="footer"><div class="wrap footerinner"><div><strong>🍌 BananaScript™</strong> &nbsp; Code. Confuse. Commit.<br><span>Unofficially certified by the International Fruit Council.</span></div><div><a href="#home">Home</a><a href="#language">Language</a><a href="#playground">Playground</a><a href="#learn">Learn</a></div><div>Made with 🍌 and a concerning amount of CSS.</div></div></footer>
-<div class="toast" id="toast" role="status"></div>
-</body>
-</html>
+<footer class="footer"><div class="wrap footerinner"><div><strong>🍌 BananaScript™</strong> &nbsp; Code. Confuse. Commit.<br><span>Unofficially certified by the International Fruit Council.</span></div><div><a href="#home">Home</a><a href="#language">Language</a><a href="#playground">Playground</a><a href="#learn">Learn</a></div><div>Made with 🍌 and a concerning amount of CSS.</div></div></footer><div class="toast" id="toast" role="status"></div>
+</body></html>
