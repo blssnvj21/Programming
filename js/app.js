@@ -4,7 +4,7 @@ const example = $('editor').value;
 
 $('runButton').addEventListener('click',()=>{
   const out=$('output'),start=performance.now();out.classList.remove('error');$('compilerState').textContent='COMPILING…';$('status').textContent='Consulting the fruit council';
-  try{const lines=execute(parse($('editor').value));out.textContent=lines.length?lines.join('\n'):'(Program completed without producing output. Suspiciously efficient.)';$('compilerState').textContent='COMPILED ✓';$('status').textContent='No bananas were harmed';}
+  try{const lines=window.BananaCompiler($('editor').value);out.textContent=lines.length?lines.join('\n'):'(Program completed without producing output. Suspiciously efficient.)';$('compilerState').textContent='EXECUTED ✓';$('status').textContent='No bananas were harmed';}
   catch(err){out.classList.add('error');out.textContent='COMPILER ERROR\n'+err.message+'\n\nAdvice: remain calm, inspect the syntax, and submit a banana.';$('compilerState').textContent='NEEDS APPEAL';$('status').textContent='Execution denied';}
   $('runtime').textContent=(performance.now()-start).toFixed(2)+' ms';
 });
