@@ -1,72 +1,50 @@
 # BananaScript Language Reference
-Version: 0.4 (teaching interpreter)
+Version: 0.5 (function and indexing upgrade)
 
-BananaScript is a small, interpreted, dynamically typed language designed for learning programming concepts. The browser playground tokenizes source text, parses it into an abstract syntax tree, and evaluates that tree. It does **not** compile to machine code or execute JavaScript source.
+BananaScript is a small, interpreted, dynamically typed language. The browser playground tokenizes source, parses it into an abstract syntax tree, and evaluates that tree. It does not compile to machine code or execute JavaScript source.
 
 ## Quick start
 
 ```banana
-hoard fruit = "banana";
-hoard count = 3;
-yeet("Inventory: " + fruit);
-
-loop_de_loop count {
-  yeet(count);
-  count = count - 1;
+recipe double(n) {
+  send_back n * 2;
 }
-
-panic_if (count == 0 && fruit == "banana") {
-  yeet("Inventory verified.");
-} cope_else {
-  yeet("Audit failed.");
-}
+hoard fruit = ["banana", "mango", "pear"];
+fruit[1] = "plantain";
+yeet(double(len(fruit)));
+yeet(fruit[1]);
 ```
 
-## Lexical rules
-- Identifiers begin with an ASCII letter or underscore and continue with letters, digits, or underscores. Names are case-sensitive.
-- Number literals are integers or decimal numbers, such as `12` or `3.5`.
-- Strings use single or double quotes. Escapes include `\\n`, `\\t`, `\\r`, and escaped characters.
-- `//` begins a comment that continues to the end of the line.
-- Semicolons are optional after simple statements.
+## BananaScript keywords
+- `hoard name = expression;` declares a variable (`stash` is an alias).
+- `yeet(expression);` displays a value (`yell` is an alias).
+- `loop_de_loop count { ... }` repeats a block (`again` is an alias).
+- `panic_if (condition) { ... } cope_else { ... }` branches (`when` and `otherwise` are aliases).
+- `while (condition) { ... }` repeats while a condition is true.
+- `recipe name(parameter, ...) { ... }` declares a function.
+- `send_back expression;` returns a value from a function. Bare `send_back;` returns no value (`null`).
 
-## Statements
-- Declaration: `let name = expression;` (aliases: `stash`, `hoard`)
-- Assignment: `name = expression;`
-- Output: `print(expression);` (aliases: `yell`, `yeet`)
-- Counted loop: `repeat expression { statements }` (aliases: `again`, `loop_de_loop`)
-- Conditional: `if (expression) { ... } else { ... }` (aliases: `when`/`panic_if`, `otherwise`/`cope_else`)
-- Conditional loop: `while (expression) { statements }`
+## Values and expressions
+Values are numbers, strings, booleans, arrays, and null (as a function's implicit return value). Strings use single or double quotes; escapes include `\\n`, `\\t`, `\\r`, and escaped characters. `//` starts a line comment. Semicolons are optional after simple statements.
 
-## Expressions and precedence
-From higher to lower precedence:
-1. Parentheses, literals, variable references
-2. Unary `-` and `!`
-3. `*`, `/`, `%`
-4. `+`, `-`
-5. `<`, `>`, `<=`, `>=`, `==`, `!=`
-6. `&&`
-7. `||`
+Operators, from higher to lower precedence: parentheses/indexing, unary `-` and `!`, `*` `/` `%`, `+` `-`, comparisons, `&&`, `||`.
 
-Arithmetic operators require numbers. Division and remainder by zero produce errors. The plus operator adds two numbers, or concatenates values as text if either operand is a string. Comparisons use strict equality for `==` and `!=`; relational comparisons follow JavaScript's ordering rules for the two evaluated values. Logical operators convert operands to booleans and short-circuit.
+## Functions
+Functions accept comma-separated parameters and return values using `send_back`. Calls use `name(arguments)`. Parameters and variables declared inside a function are local to that call; assignments update the nearest existing variable, so a function can update a global variable if no local variable shadows it. Functions can call other functions and recurse, with a call-depth limit of 100. Arguments are evaluated before the call. Function declarations become available when execution reaches the declaration.
 
-## Runtime behavior and limits
-- Values: numbers, strings, booleans, and arrays.
-- Array literals use brackets, e.g. `[1, 2, 3]`. Arrays are mutable. Built-ins: `len(value)`, `push(array, value)`, `pop(array)`, `str(value)`, and `num(value)`.
-- Variables are declared once in a single global environment; assignment requires an existing variable.
-- Blocks do not introduce a separate lexical scope.
-- Execution stops after 10,000 executed statements.
-- A counted loop accepts an integer from 0 through 1,000.
-- A while loop is limited to 1,000 iterations per while statement.
-- Output is limited to 500 lines.
-- Runtime errors stop the current program and display a message in the playground.
+## Arrays
+Array literals: `[1, "two", true]`. Read an item with `items[0]`; update an existing item with `items[0] = "new"`. Indexes are zero-based integers. Out-of-range reads and writes produce errors. Strings can be indexed to read a one-character string, but cannot be assigned through an index. Arrays are mutable and passed by reference. Built-ins: `len(value)`, `push(array, value)`, `pop(array)`, `str(value)`, and `num(value)`.
 
-## Not implemented yet
-User-defined functions, return, array indexing, objects, user input, break/continue, imports/modules, file access, networking, concurrency, classes, static typing, and compilation to native or bytecode targets are not part of this interpreter. The Academy's broader syllabus is a roadmap for future study, not a claim that these features already run in BananaScript.
+## Runtime limits
+- 10,000 executed statements per run.
+- `loop_de_loop` accepts an integer from 0 through 1,000.
+- Each `while` statement is limited to 1,000 iterations.
+- 500 output lines.
+- Function call depth is limited to 100.
+- Runtime errors stop execution and display a message.
 
-## Implementation architecture
-1. **Tokenizer** converts characters into tokens.
-2. **Parser** checks grammar and builds statement/expression objects (an AST).
-3. **Evaluator** walks the AST and computes values or executes statements.
-4. **Host UI** displays output and errors. The interpreter runs in the browser; this implementation does not send source code to a server.
+## Current limitations
+No objects, user input, break/continue, imports/modules, file access, networking, concurrency, classes, static typing, closures, or native/bytecode compilation. This is a learning language, not a production security sandbox. Do not run untrusted code in a privileged environment.
 
-This is a learning language, not a production security sandbox. Do not treat it as suitable for running untrusted code in a privileged environment.
+## Implementation
+Tokenizer → parser → AST → evaluator → browser UI. Source code is evaluated locally in the browser by the interpreter.
