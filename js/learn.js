@@ -79,6 +79,32 @@ yeet(type("banana"));
 yeet(num("12") + 3);
 yeet(str(42) + " bananas");</pre><p><code>abs</code>, <code>floor</code>, <code>ceil</code>, <code>round</code>, and <code>sqrt</code> work with numbers. <code>type</code> reports a value's type. <code>num</code> converts numeric text to a number; <code>str</code> converts a value to text.</p><div class="concept-callout"><strong>Small rule, big help</strong><br>Pass the kind of value a helper expects. For example, <code>sqrt(-1)</code> is rejected.</div>`],
 ["Graduation and next steps","8 min","Keep learning",`<h1>15 · Graduation (pending fruit review)</h1><p>You have practiced values, variables, expressions, decisions, loops, functions, arrays, built-in helpers, and debugging.</p><h2>Your next mission</h2><ol><li>Build a fruit inventory with arrays.</li><li>Write a recipe that calculates totals.</li><li>Use conditions to handle unusual cases.</li><li>Test with several inputs and explain the output.</li><li>Read the BananaScript language reference when you meet a new feature.</li></ol><div class="concept-callout"><strong>Final wisdom</strong><br>Predict, run, explain, modify. Repeat until the program works and you understand why.</div>`]
+
+[ "Strings and text tools","12 min","Text processing",`<h1>16 · Strings and text tools</h1><p>Strings represent text. You can join strings with <code>+</code>, measure them with <code>len</code>, search with <code>contains</code>, split them into arrays, and join arrays back into text.</p><pre>hoard phrase = "banana mango pear";
+yeet(len(phrase));
+yeet(contains(phrase, "mango"));
+yeet(join(split(phrase, " "), " / "));</pre><p><code>split</code> returns an array. <code>join</code> combines array items using the separator you provide. Text tools are useful for cleaning and formatting data.</p>`],
+[ "While loops and termination","12 min","Condition-controlled loops",`<h1>17 · While loops and termination</h1><p>A <code>while</code> loop repeats as long as its condition is true. Something inside the loop should eventually make the condition false.</p><pre>hoard count = 3;
+while (count > 0) {
+  yeet(count);
+  count = count - 1;
+}
+yeet("Done");</pre><div class="concept-callout"><strong>Banana safety rule</strong><br>If the condition never becomes false, the loop may not finish. Change one variable at a time and trace the condition.</div>`],
+[ "Search and simple algorithms","15 min","Solve a problem",`<h1>18 · Search and simple algorithms</h1><p>An algorithm is a precise sequence of steps. This example searches an array and reports whether a value appears. The loop checks one item at a time.</p><pre>hoard fruits = ["banana", "mango", "pear"];
+hoard found = false;
+hoard i = 0;
+while (i < len(fruits)) {
+  panic_if (fruits[i] == "mango") {
+    found = true;
+  }
+  i = i + 1;
+}
+yeet(found);</pre><p>Trace <code>i</code>, the current item, and <code>found</code>. Later, learn how to stop early and compare algorithms by their time and memory costs.</p>`],
+[ "Built-in library: min, max, and collections","12 min","More standard helpers",`<h1>19 · More built-in helpers</h1><p>Small standard-library functions save effort. <code>min</code> and <code>max</code> compare numbers; <code>contains</code> checks for a value in a string or array.</p><pre>yeet(min(8, 3, 11));
+yeet(max(8, 3, 11));
+yeet(contains(["banana", "pear"], "pear"));</pre><p>Use <code>push</code> to add an array item, <code>pop</code> to remove the last item, and <code>len</code> to count characters or items. Consult the language reference for exact argument rules.</p>`],
+[ "Testing, projects, and next languages","15 min","From exercises to software",`<h1>20 · Testing, projects, and next languages</h1><p>A program that works for one example may fail on another. Test normal cases, boundary cases, and unexpected values.</p><ol><li>Write down the expected result before running.</li><li>Try at least three different inputs.</li><li>Check empty collections and zero where relevant.</li><li>Read errors instead of hiding them.</li><li>Explain the algorithm in plain language.</li></ol><h2>Choose a next project</h2><ul><li>Fruit inventory with stock, sales, and totals.</li><li>Quiz grader with a score and feedback.</li><li>Shopping list using arrays and helper functions.</li></ul><p>BananaScript teaches fundamentals. For files, web servers, databases, classes, and larger applications, learn a general-purpose language and its tools.</p>`]
+
 ];
 const lessonChecks=[
 {q:"What appears first?",a:["Second","First","Both on one line"],c:1,why:"Statements execute in source order."},
@@ -96,7 +122,12 @@ const lessonChecks=[
 {q:"What is the index of the first array item?",a:["0","1","-1"],c:0,why:"BananaScript arrays use zero-based indexes."},
 {q:"What does sqrt(81) return?",a:["9","8","81"],c:0,why:"sqrt returns the square root of a non-negative number."},
 {q:"What happens if a recipe reaches its end without send_back?",a:["It returns null","It repeats forever","It prints the recipe"],c:0,why:"A function that falls through returns null."},
-{q:"Which learning cycle builds understanding?",a:["Copy and move on","Predict, run, explain, modify","Guess until lucky"],c:1,why:"Prediction and explanation help reveal your mental model."}
+{q:"Which learning cycle builds understanding?",a:["Copy and move on","Predict, run, explain, modify","Guess until lucky"],c:1,why:"Prediction and explanation help reveal your mental model."},
+{q:"What does split(text, separator) produce?",a:["An array of pieces","A number","A boolean only"],c:0,why:"split separates text into an array."},
+{q:"What must a while loop eventually do to finish?",a:["Make its condition false","Print a message","Declare a function"],c:0,why:"A condition-controlled loop ends when its condition is false."},
+{q:"What is an algorithm?",a:["A precise set of steps to solve a problem","A variable name","A type of computer screen"],c:0,why:"Algorithms describe steps for solving a problem."},
+{q:"What does max(8, 3, 11) return?",a:["3","8","11"],c:2,why:"max returns the largest supplied number."},
+{q:"Why test multiple cases?",a:["To discover cases the first example misses","To make code longer","To avoid understanding it"],c:0,why:"Different and boundary cases reveal hidden bugs."}
 ];
 const challenges=[
 {title:"Challenge 01: Say hello",prompt:'Print the exact text Hello, world! (including punctuation).',code:'yeet("Hello, world!");',hint:'Use yeet("...") with the greeting inside quotes.',test:o=>o.trim()==="Hello, world!"},
