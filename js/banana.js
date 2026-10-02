@@ -2,7 +2,7 @@
 
 /*
  * BananaScript compiler/runtime core.
- * Pipeline: source -> tokens -> AST -> interpreter.
+ * Pipeline: source -> tokens -> AST -> interpreter.\n * v0.9 adds break/continue and else-if control flow.
  * Kept separate from page UI so Academy and Playground execute
  * exactly the same BananaScript implementation.
  */
@@ -35,13 +35,13 @@ function tokenize(source) {
     }
     const two=source.slice(i,i+2);
     if(['==','!=','<=','>=','&&','||'].includes(two)){tokens.push({type:'op',value:two});i+=2;continue;}
-    if('+-*/%(){}[]=<>;,!'.includes(c)){tokens.push({type:'op',value:c});i++;continue;}
+    if('+-*/%(){}[]=<>;,!:'.includes(c)){tokens.push({type:'op',value:c});i++;continue;}
     throw Error('Unexpected character "'+c+'" at character '+(i+1)+'.');
   }
   tokens.push({type:'eof',value:''});return tokens;
 }
 function parse(source){
- const tokens=tokenize(source);let pos=0;
+ const tokens=tokenize(source);let pos=0,loopDepth=0;
  const peek=()=>tokens[pos],take=()=>tokens[pos++],is=v=>peek().value===v;
  const expect=v=>{if(!is(v))throw Error('Expected "'+v+'", received "'+(peek().value||'end of file')+'".');return take();};
  const identifier=()=>{if(peek().type!=='id')throw Error('Expected a name.');return take().value;};
@@ -76,9 +76,9 @@ function parse(source){
   if(is('return')){take();const value=is(';')||is('}')?{kind:'literal',value:null}:expression();if(is(';'))take();return{kind:'return',value};}
   if(is('let')){take();const name=identifier();expect('=');const value=expression();if(is(';'))take();return{kind:'let',name,value};}
   if(is('print')){take();expect('(');const value=expression();expect(')');if(is(';'))take();return{kind:'print',value};}
-  if(is('repeat')){take();const count=expression();return{kind:'repeat',count,body:block()};}
-  if(is('while')){take();expect('(');const test=expression();expect(')');return{kind:'while',test,body:block()};}
-  if(is('if')){take();expect('(');const test=expression();expect(')');const yes=block();let no=[];if(is('else')){take();no=block();}return{kind:'if',test,yes,no};}
+  if(is('break')){if(loopDepth===0)throw Error('break can only be used inside a loop.');take();if(is(';'))take();return{kind:'break'};}\n  if(is('continue')){if(loopDepth===0)throw Error('continue can only be used inside a loop.');take();if(is(';'))take();return{kind:'continue'};}\n  if(is('repeat')){take();const count=expression();loopDepth++;const body=block();loopDepth--;return{kind:'repeat',count,body};}
+  if(is('while')){take();expect('(');const test=expression();expect(')');loopDepth++;const body=block();loopDepth--;return{kind:'while',test,body};}
+  if(is('if')){take();expect('(');const test=expression();expect(')');const yes=block();let no=[];if(is('else')){take();if(is('if'))no=[statement()];else no=block();}return{kind:'if',test,yes,no};}
   if(peek().type==='id'){
     const name=take().value;
     if(is('[')){take();const index=expression();expect(']');expect('=');const value=expression();if(is(';'))take();return{kind:'indexAssign',name,index,value};}
@@ -131,14 +131,14 @@ function execute(ast){
  }
  function run(list){for(const s of list){if(++steps>maxSteps)throw Error('Execution limit reached (10,000 statements).');
   if(s.kind==='func'){if(Object.prototype.hasOwnProperty.call(functions,s.name))throw Error('Function "'+s.name+'" is already declared.');functions[s.name]=s;}
-  else if(s.kind==='return'){if(callDepth===0)throw Error('send_back can only be used inside a recipe.');throw {isBananaReturn:true,value:evaluate(s.value)};}
+  else if(s.kind==='break'||s.kind==='continue'){throw {bananaControl:s.kind};}\n  else if(s.kind==='return'){if(callDepth===0)throw Error('send_back can only be used inside a recipe.');throw {isBananaReturn:true,value:evaluate(s.value)};}
   else if(s.kind==='let'){if(Object.prototype.hasOwnProperty.call(scopes[scopes.length-1],s.name))throw Error('"'+s.name+'" is already declared in this scope.');scopes[scopes.length-1][s.name]=evaluate(s.value);}
   else if(s.kind==='assign')assign(s.name,evaluate(s.value));
   else if(s.kind==='indexAssign'){const arr=lookup(s.name),idx=evaluate(s.index),v=evaluate(s.value);if(!Array.isArray(arr))throw Error('Indexed assignment requires an array variable.');if(!Number.isInteger(idx)||idx<0||idx>=arr.length)throw Error('Index is out of range.');arr[idx]=v;}
   else if(s.kind==='print'){if(output.length>=500)throw Error('Output limit reached (500 lines).');output.push(String(evaluate(s.value)));}
   else if(s.kind==='if')run(evaluate(s.test)?s.yes:s.no);
-  else if(s.kind==='repeat'){const count=evaluate(s.count);if(!Number.isInteger(count)||count<0||count>1000)throw Error('repeat requires an integer from 0 to 1000.');for(let i=0;i<count;i++)run(s.body);}
-  else if(s.kind==='while'){let turns=0;while(evaluate(s.test)){if(++turns>1000)throw Error('while loop limit reached (1,000 iterations).');run(s.body);}}
+  else if(s.kind==='repeat'){const count=evaluate(s.count);if(!Number.isInteger(count)||count<0||count>1000)throw Error('repeat requires an integer from 0 to 1000.');for(let i=0;i<count;i++){try{run(s.body);}catch(e){if(e&&e.bananaControl==='break')break;if(e&&e.bananaControl==='continue')continue;throw e;}}}
+  else if(s.kind==='while'){let turns=0;while(evaluate(s.test)){if(++turns>1000)throw Error('while loop limit reached (1,000 iterations).');try{run(s.body);}catch(e){if(e&&e.bananaControl==='break')break;if(e&&e.bananaControl==='continue')continue;throw e;}}}
  }}
  run(ast);return output;
 }
