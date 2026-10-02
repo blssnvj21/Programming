@@ -1,4 +1,5 @@
-const CACHE="bananascript-v21";
+"use strict";
+const CACHE="bananascript-v22";
 const ASSETS=["./","./index.html","./learn.html","./css/style.css","./css/learn.css","./js/app.js","./js/learn.js","./js/pwa.js","./manifest.webmanifest","./assets/banana.svg"];
 
 self.addEventListener("install",event=>{
@@ -18,34 +19,23 @@ self.addEventListener("activate",event=>{
 });
 
 self.addEventListener("fetch",event=>{
-  if(event.request.method!=="GET") return;
+  const request=event.request;
+  if(request.method!=="GET") return;
+  const url=new URL(request.url);
+  if(url.origin!==self.location.origin) return;
 
-  const url=new URL(event.request.url);
-  const isPage=event.request.mode==="navigate" || /\\.html$/i.test(url.pathname);
-
-  if(isPage){
-    event.respondWith(
-      fetch(event.request)
-        .then(response=>{
-          if(response.ok){
-            const copy=response.clone();
-            caches.open(CACHE).then(cache=>cache.put(event.request,copy));
-          }
-          return response;
-        })
-        .catch(()=>caches.match(event.request).then(hit=>hit||caches.match("./index.html")))
-    );
-    return;
-  }
-
+  // Prefer the deployed version; use the cache only when offline.
   event.respondWith(
-    caches.match(event.request)
-      .then(hit=>hit||fetch(event.request).then(response=>{
+    fetch(request)
+      .then(response=>{
         if(response.ok){
           const copy=response.clone();
-          caches.open(CACHE).then(cache=>cache.put(event.request,copy));
+          caches.open(CACHE).then(cache=>cache.put(request,copy));
         }
         return response;
-      }))
+      })
+      .catch(()=>caches.match(request).then(hit=>hit||(
+        request.mode==="navigate" ? caches.match("./index.html") : undefined
+      )))
   );
 });
