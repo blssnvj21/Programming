@@ -1,7 +1,7 @@
 # BananaScript Language Reference
-Version: 0.8 (null literals and standard library)
+Version: 0.11 (loop controls, expanded standard library, safer ranges)
 
-BananaScript is a small, interpreted, dynamically typed language. The browser playground tokenizes source, parses it into an abstract syntax tree, and evaluates that tree. It does not compile to machine code or execute JavaScript source.
+BananaScript is a small, interpreted, dynamically typed language. The browser playground tokenizes source, parses it into an abstract syntax tree, and evaluates that tree. The current runtime is BananaScript v0.11. It does not compile to machine code or execute JavaScript source.
 
 ## Quick start
 
